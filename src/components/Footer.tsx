@@ -1,25 +1,26 @@
 import React from 'react';
 import styled from 'styled-components';
-import { theme, Container } from '../styles/GlobalStyles';
+import { Container } from '../styles/GlobalStyles';
 import { contactInfo, personalInfo } from '../data/portfolioData';
 import { Icon } from './icons/IconMappings';
 
 const FooterContainer = styled.footer`
-  background: ${theme.colors.text};
-  color: ${theme.colors.white};
-  padding: ${theme.spacing.xl} 0 ${theme.spacing.lg};
+  background: ${({ theme }) => theme.colors.footerBg};
+  color: ${({ theme }) => theme.colors.footerText};
+  padding: ${({ theme }) => theme.spacing.xl} 0 ${({ theme }) => theme.spacing.lg};
   position: relative;
+  border-top: 1px solid ${({ theme }) => theme.colors.border};
 `;
 
 const FooterContent = styled.div`
   display: grid;
   grid-template-columns: 1fr 1fr 1fr;
-  gap: ${theme.spacing.xl};
-  margin-bottom: ${theme.spacing.lg};
+  gap: ${({ theme }) => theme.spacing.xl};
+  margin-bottom: ${({ theme }) => theme.spacing.lg};
 
-  @media (max-width: ${theme.breakpoints.tablet}) {
+  @media (max-width: ${({ theme }) => theme.breakpoints.tablet}) {
     grid-template-columns: 1fr;
-    gap: ${theme.spacing.lg};
+    gap: ${({ theme }) => theme.spacing.lg};
     text-align: center;
   }
 `;
@@ -27,33 +28,33 @@ const FooterContent = styled.div`
 const FooterSection = styled.div`
   h4 {
     font-size: 1.125rem;
-    margin-bottom: ${theme.spacing.md};
-    color: ${theme.colors.white};
+    margin-bottom: ${({ theme }) => theme.spacing.md};
+    color: ${({ theme }) => theme.colors.footerText};
   }
 
   p {
-    color: rgba(255, 255, 255, 0.8);
+    color: ${({ theme }) => theme.colors.footerTextLight};
     line-height: 1.6;
-    margin-bottom: ${theme.spacing.sm};
+    margin-bottom: ${({ theme }) => theme.spacing.sm};
   }
 
   a {
-    color: rgba(255, 255, 255, 0.8);
+    color: ${({ theme }) => theme.colors.footerTextLight};
     text-decoration: none;
     transition: color 0.3s ease;
 
     &:hover {
-      color: ${theme.colors.white};
+      color: ${({ theme }) => theme.colors.primary};
     }
   }
 `;
 
 const SocialLinks = styled.div`
   display: flex;
-  gap: ${theme.spacing.md};
-  margin-top: ${theme.spacing.md};
+  gap: ${({ theme }) => theme.spacing.md};
+  margin-top: ${({ theme }) => theme.spacing.md};
 
-  @media (max-width: ${theme.breakpoints.tablet}) {
+  @media (max-width: ${({ theme }) => theme.breakpoints.tablet}) {
     justify-content: center;
   }
 `;
@@ -64,15 +65,15 @@ const SocialLink = styled.a`
   justify-content: center;
   width: 40px;
   height: 40px;
-  background: rgba(255, 255, 255, 0.1);
-  color: rgba(255, 255, 255, 0.8);
+  background: ${({ theme }) => theme.colors.footerSocialBg};
+  color: ${({ theme }) => theme.colors.footerTextLight};
   border-radius: 50%;
   transition: all 0.3s ease;
   font-size: 1rem;
 
   &:hover {
-    background: ${theme.colors.primary};
-    color: ${theme.colors.white};
+    background: ${({ theme }) => theme.colors.primary};
+    color: ${({ theme }) => theme.colors.white};
     transform: translateY(-3px);
   }
 `;
@@ -80,37 +81,37 @@ const SocialLink = styled.a`
 const QuickLinks = styled.div`
   display: flex;
   flex-direction: column;
-  gap: ${theme.spacing.xs};
+  gap: ${({ theme }) => theme.spacing.xs};
 
   a {
     display: inline-block;
-    padding: ${theme.spacing.xs} 0;
+    padding: ${({ theme }) => theme.spacing.xs} 0;
     border-bottom: 1px solid transparent;
     transition: border-color 0.3s ease;
 
     &:hover {
-      border-bottom-color: rgba(255, 255, 255, 0.3);
+      border-bottom-color: ${({ theme }) => theme.colors.primary};
     }
   }
 `;
 
 const FooterBottom = styled.div`
-  border-top: 1px solid rgba(255, 255, 255, 0.1);
-  padding-top: ${theme.spacing.lg};
+  border-top: 1px solid ${({ theme }) => theme.colors.border};
+  padding-top: ${({ theme }) => theme.spacing.lg};
   display: flex;
   justify-content: space-between;
   align-items: center;
   flex-wrap: wrap;
-  gap: ${theme.spacing.md};
+  gap: ${({ theme }) => theme.spacing.md};
 
-  @media (max-width: ${theme.breakpoints.tablet}) {
+  @media (max-width: ${({ theme }) => theme.breakpoints.tablet}) {
     justify-content: center;
     text-align: center;
   }
 `;
 
 const Copyright = styled.p`
-  color: rgba(255, 255, 255, 0.6);
+  color: ${({ theme }) => theme.colors.footerTextLight};
   font-size: 0.875rem;
   margin: 0;
 
@@ -121,10 +122,10 @@ const Copyright = styled.p`
 `;
 
 const BackToTop = styled.button`
-  background: ${theme.colors.primary};
-  color: ${theme.colors.white};
+  background: ${({ theme }) => theme.colors.primary};
+  color: ${({ theme }) => theme.colors.white};
   border: none;
-  padding: ${theme.spacing.sm};
+  padding: ${({ theme }) => theme.spacing.sm};
   border-radius: 50%;
   width: 40px;
   height: 40px;
@@ -136,11 +137,11 @@ const BackToTop = styled.button`
   font-size: 1rem;
 
   &:hover {
-    background: ${theme.colors.primaryDark};
+    background: ${({ theme }) => theme.colors.primaryDark};
     transform: translateY(-3px);
   }
 
-  @media (max-width: ${theme.breakpoints.tablet}) {
+  @media (max-width: ${({ theme }) => theme.breakpoints.tablet}) {
     margin: 0 auto;
   }
 `;

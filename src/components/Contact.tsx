@@ -1,62 +1,63 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
 import { motion } from 'framer-motion';
-import { theme, Container, Section, SectionTitle, Button } from '../styles/GlobalStyles';
+import { Container, Section, SectionTitle, Button } from '../styles/GlobalStyles';
 import { contactInfo } from '../data/portfolioData';
 import { Icon } from './icons/IconMappings';
 
 const ContactContainer = styled(Section)`
-  background: ${theme.colors.backgroundAlt};
+  background: ${({ theme }) => theme.colors.backgroundAlt};
 `;
 
 const ContactContent = styled.div`
   display: grid;
   grid-template-columns: 1fr 1fr;
-  gap: ${theme.spacing.xxl};
+  gap: ${({ theme }) => theme.spacing.xxl};
   align-items: start;
 
-  @media (max-width: ${theme.breakpoints.tablet}) {
+  @media (max-width: ${({ theme }) => theme.breakpoints.tablet}) {
     grid-template-columns: 1fr;
-    gap: ${theme.spacing.xl};
+    gap: ${({ theme }) => theme.spacing.xl};
   }
 `;
 
 const ContactInfo = styled(motion.div)`
   h3 {
     font-size: 1.5rem;
-    margin-bottom: ${theme.spacing.md};
-    color: ${theme.colors.text};
+    margin-bottom: ${({ theme }) => theme.spacing.md};
+    color: ${({ theme }) => theme.colors.text};
   }
 
   p {
     font-size: 1.125rem;
     line-height: 1.6;
-    color: ${theme.colors.textLight};
-    margin-bottom: ${theme.spacing.xl};
+    color: ${({ theme }) => theme.colors.textLight};
+    margin-bottom: ${({ theme }) => theme.spacing.xl};
   }
 `;
 
 const ContactItem = styled(motion.div)`
   display: flex;
   align-items: center;
-  gap: ${theme.spacing.md};
-  margin-bottom: ${theme.spacing.lg};
-  padding: ${theme.spacing.md};
-  background: ${theme.colors.white};
-  border-radius: ${theme.borderRadius.medium};
-  box-shadow: ${theme.shadows.small};
+  gap: ${({ theme }) => theme.spacing.md};
+  margin-bottom: ${({ theme }) => theme.spacing.lg};
+  padding: ${({ theme }) => theme.spacing.md};
+  background: ${({ theme }) => theme.colors.cardBg};
+  border: 1px solid ${({ theme }) => theme.colors.border};
+  border-radius: ${({ theme }) => theme.borderRadius.medium};
+  box-shadow: ${({ theme }) => theme.shadows.small};
   transition: all 0.3s ease;
 
   &:hover {
     transform: translateX(10px);
-    box-shadow: ${theme.shadows.medium};
+    box-shadow: ${({ theme }) => theme.shadows.medium};
   }
 
   .icon {
     font-size: 1.25rem;
-    color: ${theme.colors.primary};
-    background: ${theme.colors.backgroundAlt};
-    padding: ${theme.spacing.sm};
+    color: ${({ theme }) => theme.colors.primary};
+    background: ${({ theme }) => theme.colors.backgroundAlt};
+    padding: ${({ theme }) => theme.spacing.sm};
     border-radius: 50%;
     min-width: 50px;
     height: 50px;
@@ -68,21 +69,21 @@ const ContactItem = styled(motion.div)`
   .content {
     .label {
       font-weight: 600;
-      color: ${theme.colors.text};
-      margin-bottom: ${theme.spacing.xs};
+      color: ${({ theme }) => theme.colors.text};
+      margin-bottom: ${({ theme }) => theme.spacing.xs};
     }
 
     .value {
-      color: ${theme.colors.textLight};
+      color: ${({ theme }) => theme.colors.textLight};
       word-break: break-all;
 
       a {
-        color: ${theme.colors.primary};
+        color: ${({ theme }) => theme.colors.primary};
         text-decoration: none;
         transition: color 0.3s ease;
 
         &:hover {
-          color: ${theme.colors.primaryDark};
+          color: ${({ theme }) => theme.colors.primaryDark};
           text-decoration: underline;
         }
       }
@@ -91,84 +92,87 @@ const ContactItem = styled(motion.div)`
 `;
 
 const ContactForm = styled(motion.form)`
-  background: ${theme.colors.white};
-  padding: ${theme.spacing.xl};
-  border-radius: ${theme.borderRadius.large};
-  box-shadow: ${theme.shadows.medium};
+  background: ${({ theme }) => theme.colors.cardBg};
+  border: 1px solid ${({ theme }) => theme.colors.border};
+  padding: ${({ theme }) => theme.spacing.xl};
+  border-radius: ${({ theme }) => theme.borderRadius.large};
+  box-shadow: ${({ theme }) => theme.shadows.medium};
 
   h3 {
     font-size: 1.5rem;
-    margin-bottom: ${theme.spacing.lg};
-    color: ${theme.colors.text};
+    margin-bottom: ${({ theme }) => theme.spacing.lg};
+    color: ${({ theme }) => theme.colors.text};
     text-align: center;
   }
 `;
 
 const FormGroup = styled.div`
-  margin-bottom: ${theme.spacing.lg};
+  margin-bottom: ${({ theme }) => theme.spacing.lg};
   position: relative;
 
   label {
     display: block;
-    margin-bottom: ${theme.spacing.xs};
-    color: ${theme.colors.text};
+    margin-bottom: ${({ theme }) => theme.spacing.xs};
+    color: ${({ theme }) => theme.colors.text};
     font-weight: 600;
   }
 
   .required {
-    color: ${theme.colors.error};
+    color: ${({ theme }) => theme.colors.error};
   }
 `;
 
 const FormInput = styled.input`
   width: 100%;
-  padding: ${theme.spacing.md};
-  border: 2px solid ${theme.colors.border};
-  border-radius: ${theme.borderRadius.medium};
+  padding: ${({ theme }) => theme.spacing.md};
+  border: 2px solid ${({ theme }) => theme.colors.border};
+  border-radius: ${({ theme }) => theme.borderRadius.medium};
   font-size: 1rem;
   transition: all 0.3s ease;
-  background: ${theme.colors.backgroundAlt};
+  background: ${({ theme }) => theme.colors.background};
+  color: ${({ theme }) => theme.colors.text};
 
   &:focus {
     outline: none;
-    border-color: ${theme.colors.primary};
-    background: ${theme.colors.white};
+    border-color: ${({ theme }) => theme.colors.primary};
+    background: ${({ theme }) => theme.colors.background};
     box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
   }
 
   &::placeholder {
-    color: ${theme.colors.textLight};
+    color: ${({ theme }) => theme.colors.textLight};
   }
 `;
 
 const FormTextarea = styled.textarea`
   width: 100%;
-  padding: ${theme.spacing.md};
-  border: 2px solid ${theme.colors.border};
-  border-radius: ${theme.borderRadius.medium};
+  padding: ${({ theme }) => theme.spacing.md};
+  border: 2px solid ${({ theme }) => theme.colors.border};
+  border-radius: ${({ theme }) => theme.borderRadius.medium};
   font-size: 1rem;
   transition: all 0.3s ease;
-  background: ${theme.colors.backgroundAlt};
+  background: ${({ theme }) => theme.colors.background};
+  color: ${({ theme }) => theme.colors.text};
   min-height: 120px;
   resize: vertical;
   font-family: inherit;
 
   &:focus {
     outline: none;
-    border-color: ${theme.colors.primary};
-    background: ${theme.colors.white};
+    border-color: ${({ theme }) => theme.colors.primary};
+    background: ${({ theme }) => theme.colors.background};
     box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
   }
 
   &::placeholder {
-    color: ${theme.colors.textLight};
+    color: ${({ theme }) => theme.colors.textLight};
   }
 `;
 
 const SubmitButton = styled(Button)`
   width: 100%;
   justify-content: center;
-  padding: ${theme.spacing.md};
+  padding: ${({ theme }) => theme.spacing.md};
   font-size: 1.125rem;
 
   &:disabled {
@@ -179,9 +183,9 @@ const SubmitButton = styled(Button)`
 
 const SocialLinks = styled.div`
   display: flex;
-  gap: ${theme.spacing.md};
+  gap: ${({ theme }) => theme.spacing.md};
   justify-content: center;
-  margin-top: ${theme.spacing.xl};
+  margin-top: ${({ theme }) => theme.spacing.xl};
 `;
 
 const SocialLink = styled.a`
@@ -190,31 +194,32 @@ const SocialLink = styled.a`
   justify-content: center;
   width: 50px;
   height: 50px;
-  background: ${theme.colors.white};
-  color: ${theme.colors.primary};
+  background: ${({ theme }) => theme.colors.cardBg};
+  color: ${({ theme }) => theme.colors.primary};
+  border: 1px solid ${({ theme }) => theme.colors.border};
   border-radius: 50%;
-  box-shadow: ${theme.shadows.small};
+  box-shadow: ${({ theme }) => theme.shadows.small};
   transition: all 0.3s ease;
   font-size: 1.25rem;
 
   &:hover {
-    background: ${theme.colors.primary};
-    color: ${theme.colors.white};
+    background: ${({ theme }) => theme.colors.primary};
+    color: ${({ theme }) => theme.colors.white};
     transform: translateY(-5px);
-    box-shadow: ${theme.shadows.medium};
+    box-shadow: ${({ theme }) => theme.shadows.medium};
   }
 `;
 
 const StatusMessage = styled.div<{ type: 'success' | 'error' }>`
-  padding: ${theme.spacing.md};
-  border-radius: ${theme.borderRadius.medium};
-  margin-bottom: ${theme.spacing.lg};
+  padding: ${({ theme }) => theme.spacing.md};
+  border-radius: ${({ theme }) => theme.borderRadius.medium};
+  margin-bottom: ${({ theme }) => theme.spacing.lg};
   background: ${props => props.type === 'success' ? '#d4edda' : '#f8d7da'};
   color: ${props => props.type === 'success' ? '#155724' : '#721c24'};
   border: 1px solid ${props => props.type === 'success' ? '#c3e6cb' : '#f5c6cb'};
   display: flex;
   align-items: center;
-  gap: ${theme.spacing.sm};
+  gap: ${({ theme }) => theme.spacing.sm};
 `;
 
 const Contact: React.FC = () => {

@@ -1,7 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
 import { motion } from 'framer-motion';
-import { theme, Container, Section, SectionTitle, Tag } from '../styles/GlobalStyles';
+import { Container, Section, SectionTitle, Tag } from '../styles/GlobalStyles';
 import { experiences } from '../data/portfolioData';
 import { Icon } from './icons/IconMappings';
 
@@ -20,9 +20,9 @@ const Timeline = styled.div`
     top: 0;
     bottom: 0;
     width: 2px;
-    background: ${theme.colors.border};
+    background: ${({ theme }) => theme.colors.border};
 
-    @media (max-width: ${theme.breakpoints.tablet}) {
+    @media (max-width: ${({ theme }) => theme.breakpoints.tablet}) {
       left: 30px;
     }
   }
@@ -30,10 +30,10 @@ const Timeline = styled.div`
 
 const ExperienceItem = styled(motion.div)<{ index: number }>`
   position: relative;
-  margin-bottom: ${theme.spacing.xxl};
+  margin-bottom: ${({ theme }) => theme.spacing.xxl};
   width: calc(50% - 40px);
   
-  ${({ index }) => index % 2 === 0 ? `
+  ${({ index, theme }) => index % 2 === 0 ? `
     left: 0;
     padding-right: ${theme.spacing.lg};
     
@@ -43,7 +43,7 @@ const ExperienceItem = styled(motion.div)<{ index: number }>`
     
     .timeline-arrow {
       right: -8px;
-      border-left: 8px solid ${theme.colors.white};
+      border-left: 8px solid ${theme.colors.cardBg};
       border-right: none;
     }
   ` : `
@@ -56,15 +56,15 @@ const ExperienceItem = styled(motion.div)<{ index: number }>`
     
     .timeline-arrow {
       left: -8px;
-      border-right: 8px solid ${theme.colors.white};
+      border-right: 8px solid ${theme.colors.cardBg};
       border-left: none;
     }
   `}
 
-  @media (max-width: ${theme.breakpoints.tablet}) {
+  @media (max-width: ${({ theme }) => theme.breakpoints.tablet}) {
     width: calc(100% - 80px);
     left: 60px !important;
-    padding-left: ${theme.spacing.lg} !important;
+    padding-left: ${({ theme }) => theme.spacing.lg} !important;
     padding-right: 0 !important;
     
     .timeline-content {
@@ -74,7 +74,7 @@ const ExperienceItem = styled(motion.div)<{ index: number }>`
     .timeline-arrow {
       left: -8px !important;
       right: auto !important;
-      border-right: 8px solid ${theme.colors.white} !important;
+      border-right: 8px solid ${({ theme }) => theme.colors.cardBg} !important;
       border-left: none !important;
     }
   }
@@ -84,12 +84,12 @@ const TimelineIcon = styled.div<{ index: number }>`
   position: absolute;
   width: 40px;
   height: 40px;
-  background: ${theme.colors.gradient};
+  background: ${({ theme }) => theme.colors.gradient};
   border-radius: 50%;
   display: flex;
   align-items: center;
   justify-content: center;
-  color: ${theme.colors.white};
+  color: ${({ theme }) => theme.colors.white};
   font-size: 1rem;
   z-index: 2;
   
@@ -99,23 +99,24 @@ const TimelineIcon = styled.div<{ index: number }>`
     left: -60px;
   `}
 
-  @media (max-width: ${theme.breakpoints.tablet}) {
+  @media (max-width: ${({ theme }) => theme.breakpoints.tablet}) {
     left: -60px !important;
     right: auto !important;
   }
 `;
 
 const ExperienceCard = styled.div`
-  background: ${theme.colors.white};
-  border-radius: ${theme.borderRadius.large};
-  box-shadow: ${theme.shadows.medium};
-  padding: ${theme.spacing.lg};
+  background: ${({ theme }) => theme.colors.cardBg};
+  border: 1px solid ${({ theme }) => theme.colors.border};
+  border-radius: ${({ theme }) => theme.borderRadius.large};
+  box-shadow: ${({ theme }) => theme.shadows.medium};
+  padding: ${({ theme }) => theme.spacing.lg};
   position: relative;
   transition: all 0.3s ease;
 
   &:hover {
     transform: translateY(-5px);
-    box-shadow: ${theme.shadows.hover};
+    box-shadow: ${({ theme }) => theme.shadows.hover};
   }
 
   .timeline-arrow {
@@ -131,46 +132,46 @@ const ExperienceCard = styled.div`
 const CompanyName = styled.h3`
   font-size: 1.25rem;
   font-weight: 700;
-  color: ${theme.colors.primary};
-  margin-bottom: ${theme.spacing.xs};
+  color: ${({ theme }) => theme.colors.primary};
+  margin-bottom: ${({ theme }) => theme.spacing.xs};
 `;
 
 const Position = styled.h4`
   font-size: 1.125rem;
   font-weight: 600;
-  color: ${theme.colors.text};
-  margin-bottom: ${theme.spacing.sm};
+  color: ${({ theme }) => theme.colors.text};
+  margin-bottom: ${({ theme }) => theme.spacing.sm};
 `;
 
 const Duration = styled.div`
   display: flex;
   align-items: center;
-  gap: ${theme.spacing.xs};
-  color: ${theme.colors.textLight};
+  gap: ${({ theme }) => theme.spacing.xs};
+  color: ${({ theme }) => theme.colors.textLight};
   font-size: 0.875rem;
-  margin-bottom: ${theme.spacing.md};
+  margin-bottom: ${({ theme }) => theme.spacing.md};
 
   svg {
-    color: ${theme.colors.primary};
+    color: ${({ theme }) => theme.colors.primary};
   }
 `;
 
 const Description = styled.ul`
   list-style: none;
-  margin-bottom: ${theme.spacing.md};
+  margin-bottom: ${({ theme }) => theme.spacing.md};
 
   li {
     position: relative;
-    padding-left: ${theme.spacing.md};
-    margin-bottom: ${theme.spacing.xs};
-    color: ${theme.colors.textLight};
+    padding-left: ${({ theme }) => theme.spacing.md};
+    margin-bottom: ${({ theme }) => theme.spacing.xs};
+    color: ${({ theme }) => theme.colors.textLight};
     line-height: 1.6;
 
     &::before {
       content: '▸';
       position: absolute;
       left: 0;
-      color: ${theme.colors.primary};
+      color: ${({ theme }) => theme.colors.primary};
       font-weight: bold;
     }
   }
@@ -179,7 +180,7 @@ const Description = styled.ul`
 const Technologies = styled.div`
   display: flex;
   flex-wrap: wrap;
-  gap: ${theme.spacing.xs};
+  gap: ${({ theme }) => theme.spacing.xs};
 `;
 
 const Experience: React.FC = () => {

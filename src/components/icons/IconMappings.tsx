@@ -36,15 +36,28 @@ import {
   FaPython,
   FaGitAlt,
   FaDocker,
+  FaJava,
   FaAws
 } from 'react-icons/fa';
 
 import {
   SiTypescript,
+  SiSpringboot,
   SiJavascript,
   SiMongodb,
   SiPostgresql,
+  SiFirebase,
   SiExpress,
+  SiPhp,
+  SiMysql,
+  SiHtml5,
+  SiCss3,
+  SiFlutter,
+  SiKotlin,
+  SiBootstrap,
+  SiArduino,
+  SiCplusplus,
+  SiCsharp,
   SiNextdotjs
 } from 'react-icons/si';
 
@@ -99,13 +112,26 @@ export const IconMap = {
   FaGitAlt: FaGitAlt,
   FaDocker: FaDocker,
   FaAws: FaAws,
+  FaJava: FaJava,
   SiTypescript: SiTypescript,
   SiJavascript: SiJavascript,
   SiMongodb: SiMongodb,
   SiPostgresql: SiPostgresql,
   SiExpress: SiExpress,
   SiNextdotjs: SiNextdotjs,
-  
+  SiFirebase: SiFirebase,
+  SiSpringboot: SiSpringboot,
+  SiPhp: SiPhp,
+  SiMysql: SiMysql,
+  SiHtml5: SiHtml5,
+  SiCss3: SiCss3,
+  SiFlutter: SiFlutter,
+  SiKotlin: SiKotlin,
+  SiBootstrap: SiBootstrap,
+  SiArduino: SiArduino,
+  SiCplusplus: SiCplusplus,
+  SiCsharp: SiCsharp,
+
   // Status icons
   FaCheckCircle: CheckCircle,
   FaExclamationTriangle: AlertTriangle,

@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
-import { theme } from '../styles/GlobalStyles';
-import { Icon } from './icons/IconMappings';
+import { Menu, X, Sun, Moon } from 'lucide-react';
+import { useDarkMode } from '../contexts/DarkModeContext';
 
 const NavbarContainer = styled.nav<{ scrolled: boolean }>`
   position: fixed;
@@ -11,11 +11,11 @@ const NavbarContainer = styled.nav<{ scrolled: boolean }>`
   z-index: 1000;
   padding: 1rem 0;
   transition: all 0.3s ease;
-  background: ${({ scrolled }) => 
-    scrolled ? 'rgba(255, 255, 255, 0.95)' : 'transparent'
+  background: ${({ scrolled, theme }) => 
+    scrolled ? theme.colors.navBg : 'transparent'
   };
   backdrop-filter: ${({ scrolled }) => scrolled ? 'blur(10px)' : 'none'};
-  border-bottom: ${({ scrolled }) => 
+  border-bottom: ${({ scrolled, theme }) => 
     scrolled ? `1px solid ${theme.colors.border}` : 'none'
   };
 `;
@@ -23,17 +23,88 @@ const NavbarContainer = styled.nav<{ scrolled: boolean }>`
 const NavContent = styled.div`
   max-width: 1200px;
   margin: 0 auto;
-  padding: 0 ${theme.spacing.md};
+  padding: 0 ${({ theme }) => theme.spacing.md};
   display: flex;
   justify-content: space-between;
   align-items: center;
+
+  @media (max-width: ${({ theme }) => theme.breakpoints.mobile}) {
+    padding: 0 1rem;
+  }
+`;
+
+const NavControls = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+
+  @media (max-width: ${({ theme }) => theme.breakpoints.tablet}) {
+    gap: 0.5rem;
+  }
+`;
+
+const DarkModeButton = styled.button`
+  background: ${({ theme }) => theme.colors.backgroundAlt};
+  border: 1px solid ${({ theme }) => theme.colors.border};
+  border-radius: 50%;
+  width: 40px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  color: ${({ theme }) => theme.colors.text};
+  transition: all 0.3s ease;
+  position: relative;
+  overflow: hidden;
+
+  &::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: ${({ theme }) => theme.colors.gradient};
+    opacity: 0;
+    transition: opacity 0.3s ease;
+    border-radius: 50%;
+  }
+
+  &:hover {
+    transform: scale(1.1);
+    box-shadow: ${({ theme }) => theme.shadows.medium};
+    
+    &::before {
+      opacity: 1;
+    }
+    
+    svg {
+      position: relative;
+      z-index: 1;
+      color: ${({ theme }) => theme.colors.white};
+    }
+  }
+
+  svg {
+    transition: all 0.3s ease;
+  }
+
+  @media (max-width: ${({ theme }) => theme.breakpoints.mobile}) {
+    width: 36px;
+    height: 36px;
+  }
 `;
 
 const Logo = styled.a`
   font-size: 1.5rem;
   font-weight: 700;
-  color: ${theme.colors.primary};
+  color: ${({ theme }) => theme.colors.primary};
   text-decoration: none;
+
+  @media (max-width: ${({ theme }) => theme.breakpoints.mobile}) {
+    font-size: 1.25rem;
+  }
 `;
 
 const NavLinks = styled.ul<{ isOpen: boolean }>`
@@ -41,30 +112,38 @@ const NavLinks = styled.ul<{ isOpen: boolean }>`
   list-style: none;
   gap: 2rem;
 
-  @media (max-width: ${theme.breakpoints.tablet}) {
+  @media (max-width: ${({ theme }) => theme.breakpoints.tablet}) {
     position: fixed;
     top: 0;
     right: ${({ isOpen }) => isOpen ? '0' : '-100%'};
-    width: 300px;
+    width: 280px;
     height: 100vh;
-    background: ${theme.colors.white};
+    background: ${({ theme }) => theme.colors.background};
     flex-direction: column;
     justify-content: center;
     align-items: center;
     transition: right 0.3s ease;
-    box-shadow: ${theme.shadows.large};
+    box-shadow: ${({ theme }) => theme.shadows.large};
+    border-left: 1px solid ${({ theme }) => theme.colors.border};
+    gap: 2.5rem;
+  }
+
+  @media (max-width: ${({ theme }) => theme.breakpoints.mobile}) {
+    width: 100vw;
+    border-left: none;
   }
 `;
 
 const NavLink = styled.a`
-  color: ${theme.colors.text};
+  color: ${({ theme }) => theme.colors.text};
   font-weight: 500;
   text-decoration: none;
   transition: color 0.3s ease;
   position: relative;
+  font-size: 1rem;
 
   &:hover {
-    color: ${theme.colors.primary};
+    color: ${({ theme }) => theme.colors.primary};
   }
 
   &::after {
@@ -74,12 +153,17 @@ const NavLink = styled.a`
     left: 0;
     width: 0;
     height: 2px;
-    background: ${theme.colors.primary};
+    background: ${({ theme }) => theme.colors.primary};
     transition: width 0.3s ease;
   }
 
   &:hover::after {
     width: 100%;
+  }
+
+  @media (max-width: ${({ theme }) => theme.breakpoints.tablet}) {
+    font-size: 1.125rem;
+    padding: 0.5rem 1rem;
   }
 `;
 
@@ -87,18 +171,64 @@ const MobileMenuButton = styled.button`
   display: none;
   background: none;
   border: none;
-  font-size: 1.5rem;
-  color: ${theme.colors.text};
+  color: ${({ theme }) => theme.colors.text};
   cursor: pointer;
+  padding: 0.5rem;
+  border-radius: ${({ theme }) => theme.borderRadius.medium};
+  transition: background-color 0.3s ease;
 
-  @media (max-width: ${theme.breakpoints.tablet}) {
-    display: block;
+  &:hover {
+    background: ${({ theme }) => theme.colors.backgroundAlt};
+  }
+
+  @media (max-width: ${({ theme }) => theme.breakpoints.tablet}) {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+`;
+
+const CloseButton = styled.button`
+  position: absolute;
+  top: 2rem;
+  right: 2rem;
+  background: none;
+  border: none;
+  color: ${({ theme }) => theme.colors.text};
+  cursor: pointer;
+  padding: 0.5rem;
+  border-radius: ${({ theme }) => theme.borderRadius.medium};
+  transition: background-color 0.3s ease;
+
+  &:hover {
+    background: ${({ theme }) => theme.colors.backgroundAlt};
+  }
+
+  @media (min-width: ${({ theme }) => theme.breakpoints.tablet}) {
+    display: none;
+  }
+`;
+
+const Overlay = styled.div<{ isOpen: boolean }>`
+  @media (max-width: ${({ theme }) => theme.breakpoints.tablet}) {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.5);
+    backdrop-filter: blur(4px);
+    z-index: 999;
+    opacity: ${({ isOpen }) => isOpen ? 1 : 0};
+    visibility: ${({ isOpen }) => isOpen ? 'visible' : 'hidden'};
+    transition: all 0.3s ease;
   }
 `;
 
 const Navbar: React.FC = () => {
   const [scrolled, setScrolled] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const { isDarkMode, toggleDarkMode } = useDarkMode();
 
   useEffect(() => {
     const handleScroll = () => {
@@ -108,6 +238,19 @@ const Navbar: React.FC = () => {
     window.addEventListener('scroll', handleScroll);
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
+
+  // Prevent body scroll when mobile menu is open
+  useEffect(() => {
+    if (mobileMenuOpen) {
+      document.body.style.overflow = 'hidden';
+    } else {
+      document.body.style.overflow = 'unset';
+    }
+
+    return () => {
+      document.body.style.overflow = 'unset';
+    };
+  }, [mobileMenuOpen]);
 
   const navItems = [
     { href: '#home', label: 'Home' },
@@ -127,36 +270,58 @@ const Navbar: React.FC = () => {
   };
 
   return (
-    <NavbarContainer scrolled={scrolled}>
-      <NavContent>
-        <Logo href="#home" onClick={() => handleNavClick('#home')}>
-          Lasindu Themiya
-        </Logo>
-        
-        <NavLinks isOpen={mobileMenuOpen}>
-          {navItems.map((item) => (
-            <li key={item.href}>
-              <NavLink
-                href={item.href}
-                onClick={(e) => {
-                  e.preventDefault();
-                  handleNavClick(item.href);
-                }}
-              >
-                {item.label}
-              </NavLink>
-            </li>
-          ))}
-        </NavLinks>
+    <>
+      <NavbarContainer scrolled={scrolled}>
+        <NavContent>
+          <Logo href="#home" onClick={() => handleNavClick('#home')}>
+            Lasindu Themiya
+          </Logo>
+          
+          <NavLinks isOpen={mobileMenuOpen}>
+            <CloseButton
+              onClick={() => setMobileMenuOpen(false)}
+              aria-label="Close mobile menu"
+            >
+              <X size={24} />
+            </CloseButton>
+            {navItems.map((item) => (
+              <li key={item.href}>
+                <NavLink
+                  href={item.href}
+                  onClick={(e) => {
+                    e.preventDefault();
+                    handleNavClick(item.href);
+                  }}
+                >
+                  {item.label}
+                </NavLink>
+              </li>
+            ))}
+          </NavLinks>
 
-        <MobileMenuButton
-          onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-          aria-label="Toggle mobile menu"
-        >
-          {mobileMenuOpen ? <Icon name="FaTimes" size={24} /> : <Icon name="FaBars" size={24} />}
-        </MobileMenuButton>
-      </NavContent>
-    </NavbarContainer>
+          <NavControls>
+            <DarkModeButton
+              onClick={toggleDarkMode}
+              title={isDarkMode ? 'Switch to light mode' : 'Switch to dark mode'}
+            >
+              {isDarkMode ? <Sun size={20} /> : <Moon size={20} />}
+            </DarkModeButton>
+            
+            <MobileMenuButton
+              onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+              aria-label="Toggle mobile menu"
+            >
+              {mobileMenuOpen ? <X size={24} /> : <Menu size={24} />}
+            </MobileMenuButton>
+          </NavControls>
+        </NavContent>
+      </NavbarContainer>
+      
+      <Overlay 
+        isOpen={mobileMenuOpen} 
+        onClick={() => setMobileMenuOpen(false)} 
+      />
+    </>
   );
 };
 

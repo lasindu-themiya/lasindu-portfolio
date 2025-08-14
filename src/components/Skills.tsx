@@ -1,68 +1,69 @@
 import React, { JSX } from 'react';
 import styled from 'styled-components';
 import { motion } from 'framer-motion';
-import { theme, Container, Section, SectionTitle, Grid } from '../styles/GlobalStyles';
+import { Container, Section, SectionTitle, Grid } from '../styles/GlobalStyles';
 import { skills } from '../data/portfolioData';
 import { Icon } from './icons/IconMappings';
 
 const SkillsContainer = styled(Section)``;
 
 const SkillCategory = styled(motion.div)`
-  background: ${theme.colors.white};
-  border-radius: ${theme.borderRadius.large};
-  box-shadow: ${theme.shadows.medium};
-  padding: ${theme.spacing.lg};
+  background: ${({ theme }) => theme.colors.cardBg};
+  border: 1px solid ${({ theme }) => theme.colors.border};
+  border-radius: ${({ theme }) => theme.borderRadius.large};
+  box-shadow: ${({ theme }) => theme.shadows.medium};
+  padding: ${({ theme }) => theme.spacing.lg};
   transition: all 0.3s ease;
 
   &:hover {
     transform: translateY(-5px);
-    box-shadow: ${theme.shadows.hover};
+    box-shadow: ${({ theme }) => theme.shadows.hover};
   }
 `;
 
 const CategoryHeader = styled.div`
   display: flex;
   align-items: center;
-  gap: ${theme.spacing.md};
-  margin-bottom: ${theme.spacing.lg};
+  gap: ${({ theme }) => theme.spacing.md};
+  margin-bottom: ${({ theme }) => theme.spacing.lg};
 
   .icon {
     font-size: 2rem;
-    color: ${theme.colors.primary};
-    background: ${theme.colors.backgroundAlt};
-    padding: ${theme.spacing.sm};
-    border-radius: ${theme.borderRadius.medium};
+    color: ${({ theme }) => theme.colors.primary};
+    background: ${({ theme }) => theme.colors.backgroundAlt};
+    padding: ${({ theme }) => theme.spacing.sm};
+    border-radius: ${({ theme }) => theme.borderRadius.medium};
   }
 
   h3 {
     font-size: 1.25rem;
     font-weight: 700;
-    color: ${theme.colors.text};
+    color: ${({ theme }) => theme.colors.text};
   }
 `;
 
 const SkillsList = styled.div`
   display: flex;
   flex-wrap: wrap;
-  gap: ${theme.spacing.sm};
+  gap: ${({ theme }) => theme.spacing.sm};
 `;
 
 const SkillItem = styled(motion.div)`
   display: flex;
   align-items: center;
-  gap: ${theme.spacing.xs};
-  background: ${theme.colors.backgroundAlt};
-  padding: ${theme.spacing.xs} ${theme.spacing.sm};
-  border-radius: ${theme.borderRadius.medium};
-  border: 1px solid ${theme.colors.border};
+  gap: ${({ theme }) => theme.spacing.xs};
+  background: ${({ theme }) => theme.colors.backgroundAlt};
+  padding: ${({ theme }) => theme.spacing.xs} ${({ theme }) => theme.spacing.sm};
+  border-radius: ${({ theme }) => theme.borderRadius.medium};
+  border: 1px solid ${({ theme }) => theme.colors.border};
   transition: all 0.3s ease;
   cursor: default;
 
   &:hover {
-    background: ${theme.colors.primary};
-    color: ${theme.colors.white};
+    background: ${({ theme }) => theme.colors.primary};
+    color: ${({ theme }) => theme.colors.white};
     transform: translateY(-2px);
-    border-color: ${theme.colors.primary};
+    border-color: ${({ theme }) => theme.colors.primary};
   }
 
   .skill-icon {
@@ -77,21 +78,21 @@ const SkillItem = styled(motion.div)`
 
 const SkillsOverview = styled.div`
   text-align: center;
-  margin-bottom: ${theme.spacing.xxl};
+  margin-bottom: ${({ theme }) => theme.spacing.xxl};
   max-width: 800px;
   margin-left: auto;
   margin-right: auto;
 
   h3 {
     font-size: 1.5rem;
-    margin-bottom: ${theme.spacing.md};
-    color: ${theme.colors.text};
+    margin-bottom: ${({ theme }) => theme.spacing.md};
+    color: ${({ theme }) => theme.colors.text};
   }
 
   p {
     font-size: 1.125rem;
     line-height: 1.6;
-    color: ${theme.colors.textLight};
+    color: ${({ theme }) => theme.colors.textLight};
   }
 `;
 
@@ -111,6 +112,19 @@ const Skills: React.FC = () => {
       'Git': <Icon name="FaGitAlt" className="skill-icon" size={24} />,
       'Docker': <Icon name="FaDocker" className="skill-icon" size={24} />,
       'AWS': <Icon name="FaAws" className="skill-icon" size={24} />,
+      'Firebase': <Icon name="SiFirebase" className="skill-icon" size={24} />,
+      'Java': <Icon name="FaJava" className="skill-icon" size={24} />,
+      'SpringBoot': <Icon name="SiSpringboot" className="skill-icon" size={24} />,
+      'PHP': <Icon name="SiPhp" className="skill-icon" size={24} />,
+      'HTML': <Icon name="SiHtml5" className="skill-icon" size={24} />,
+      'CSS': <Icon name="SiCss3" className="skill-icon" size={24} />,
+      'Flutter': <Icon name="SiFlutter" className="skill-icon" size={24} />,
+      'Kotlin': <Icon name="SiKotlin" className="skill-icon" size={24} />,
+      'Bootstrap': <Icon name="SiBootstrap" className="skill-icon" size={24} />,
+      'Arduino': <Icon name="SiArduino" className="skill-icon" size={24} />,
+      'C++': <Icon name="SiCplusplus" className="skill-icon" size={24} />,
+      'C#': <Icon name="SiCsharp" className="skill-icon" size={24} />,
+      'MySQL': <Icon name="SiMysql" className="skill-icon" size={24} />,
     };
 
     return iconMap[skillName] || <Icon name="FaCode" className="skill-icon" size={24} />;

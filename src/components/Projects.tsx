@@ -1,18 +1,19 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
 import { motion } from 'framer-motion';
-import { theme, Container, Section, SectionTitle, Grid, Tag, Button } from '../styles/GlobalStyles';
+import { Container, Section, SectionTitle, Grid, Tag, Button } from '../styles/GlobalStyles';
 import { projects } from '../data/portfolioData';
 import { Icon } from './icons/IconMappings';
 
 const ProjectsContainer = styled(Section)`
-  background: ${theme.colors.backgroundAlt};
+  background: ${({ theme }) => theme.colors.backgroundAlt};
 `;
 
 const ProjectCard = styled(motion.div)`
-  background: ${theme.colors.white};
-  border-radius: ${theme.borderRadius.large};
-  box-shadow: ${theme.shadows.medium};
+  background: ${({ theme }) => theme.colors.cardBg};
+  border: 1px solid ${({ theme }) => theme.colors.border};
+  border-radius: ${({ theme }) => theme.borderRadius.large};
+  box-shadow: ${({ theme }) => theme.shadows.medium};
   overflow: hidden;
   transition: all 0.3s ease;
   height: 100%;
@@ -21,14 +22,14 @@ const ProjectCard = styled(motion.div)`
 
   &:hover {
     transform: translateY(-10px);
-    box-shadow: ${theme.shadows.hover};
+    box-shadow: ${({ theme }) => theme.shadows.hover};
   }
 `;
 
 const ProjectImage = styled.div`
   position: relative;
   height: 200px;
-  background: ${theme.colors.gradient};
+  background: ${({ theme }) => theme.colors.gradient};
   overflow: hidden;
 
   img {
@@ -47,7 +48,7 @@ const ProjectImage = styled.div`
     align-items: center;
     justify-content: center;
     height: 100%;
-    color: ${theme.colors.white};
+    color: ${({ theme }) => theme.colors.white};
     font-size: 3rem;
   }
 `;
@@ -62,7 +63,7 @@ const ProjectOverlay = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: ${theme.spacing.md};
+  gap: ${({ theme }) => theme.spacing.md};
   opacity: 0;
   transition: opacity 0.3s ease;
 
@@ -72,10 +73,10 @@ const ProjectOverlay = styled.div`
 `;
 
 const OverlayButton = styled.button`
-  background: ${theme.colors.white};
-  color: ${theme.colors.primary};
+  background: ${({ theme }) => theme.colors.white};
+  color: ${({ theme }) => theme.colors.primary};
   border: none;
-  padding: ${theme.spacing.sm};
+  padding: ${({ theme }) => theme.spacing.sm};
   border-radius: 50%;
   width: 50px;
   height: 50px;
@@ -87,14 +88,14 @@ const OverlayButton = styled.button`
   font-size: 1.25rem;
 
   &:hover {
-    background: ${theme.colors.primary};
-    color: ${theme.colors.white};
+    background: ${({ theme }) => theme.colors.primary};
+    color: ${({ theme }) => theme.colors.white};
     transform: scale(1.1);
   }
 `;
 
 const ProjectContent = styled.div`
-  padding: ${theme.spacing.lg};
+  padding: ${({ theme }) => theme.spacing.lg};
   flex: 1;
   display: flex;
   flex-direction: column;
@@ -103,27 +104,27 @@ const ProjectContent = styled.div`
 const ProjectTitle = styled.h3`
   font-size: 1.25rem;
   font-weight: 700;
-  color: ${theme.colors.text};
-  margin-bottom: ${theme.spacing.sm};
+  color: ${({ theme }) => theme.colors.text};
+  margin-bottom: ${({ theme }) => theme.spacing.sm};
 `;
 
 const ProjectDescription = styled.p`
-  color: ${theme.colors.textLight};
+  color: ${({ theme }) => theme.colors.textLight};
   line-height: 1.6;
-  margin-bottom: ${theme.spacing.md};
+  margin-bottom: ${({ theme }) => theme.spacing.md};
   flex: 1;
 `;
 
 const ProjectTechnologies = styled.div`
   display: flex;
   flex-wrap: wrap;
-  gap: ${theme.spacing.xs};
-  margin-bottom: ${theme.spacing.md};
+  gap: ${({ theme }) => theme.spacing.xs};
+  margin-bottom: ${({ theme }) => theme.spacing.md};
 `;
 
 const ProjectLinks = styled.div`
   display: flex;
-  gap: ${theme.spacing.sm};
+  gap: ${({ theme }) => theme.spacing.sm};
   justify-content: space-between;
   align-items: center;
 `;
@@ -131,24 +132,24 @@ const ProjectLinks = styled.div`
 const FilterButtons = styled.div`
   display: flex;
   justify-content: center;
-  gap: ${theme.spacing.sm};
-  margin-bottom: ${theme.spacing.xl};
+  gap: ${({ theme }) => theme.spacing.sm};
+  margin-bottom: ${({ theme }) => theme.spacing.xl};
   flex-wrap: wrap;
 `;
 
 const FilterButton = styled.button<{ active: boolean }>`
-  padding: ${theme.spacing.sm} ${theme.spacing.md};
-  border: 2px solid ${theme.colors.primary};
-  border-radius: ${theme.borderRadius.medium};
-  background: ${({ active }) => active ? theme.colors.primary : 'transparent'};
-  color: ${({ active }) => active ? theme.colors.white : theme.colors.primary};
+  padding: ${({ theme }) => theme.spacing.sm} ${({ theme }) => theme.spacing.md};
+  border: 2px solid ${({ theme }) => theme.colors.primary};
+  border-radius: ${({ theme }) => theme.borderRadius.medium};
+  background: ${({ active, theme }) => active ? theme.colors.primary : 'transparent'};
+  color: ${({ active, theme }) => active ? theme.colors.white : theme.colors.primary};
   font-weight: 600;
   cursor: pointer;
   transition: all 0.3s ease;
 
   &:hover {
-    background: ${theme.colors.primary};
-    color: ${theme.colors.white};
+    background: ${({ theme }) => theme.colors.primary};
+    color: ${({ theme }) => theme.colors.white};
   }
 `;
 
@@ -247,7 +248,7 @@ const Projects: React.FC = () => {
                 </ProjectTechnologies>
 
                 <ProjectLinks>
-                  <div style={{ display: 'flex', gap: theme.spacing.sm }}>
+                  <div style={{ display: 'flex', gap: '0.5rem' }}>
                     {project.githubUrl && (
                       <Button
                         variant="outline"
