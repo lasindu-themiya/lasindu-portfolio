@@ -30,3 +30,5 @@ server.js
 
 # Email setup instructions (optional)
 EMAIL_SETUP.md
+
+.vercel
