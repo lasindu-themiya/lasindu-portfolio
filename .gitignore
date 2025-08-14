@@ -21,3 +21,12 @@
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
+
+# Server file (not needed for Vercel)
+server.js
+
+# Vercel
+.vercel
+
+# Email setup instructions (optional)
+EMAIL_SETUP.md
