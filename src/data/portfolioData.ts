@@ -142,5 +142,6 @@ export const education = [
 ];
 
 export const certifications = [
-  "SQL Intermediate Certification from HackerRank"
+  "SQL Intermediate Certification from HackerRank",
+  "Software Engineer Intern Certificate from HackerRank"
 ];
