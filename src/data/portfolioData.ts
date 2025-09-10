@@ -123,7 +123,15 @@ export const projects: Project[] = [
     technologies: ["Java", "Spring Boot", "REST APIs", "MySQL"],
     githubUrl: "https://github.com/21hunny/Group-2-Back-End",
     imageUrl: "/images/eventhub.png"
-  }
+  },
+  {
+  id: 5,
+  title: "MCP Website Generator",
+  description: "An AI-powered MCP server that generates complete, single-file websites (HTML, CSS, JS embedded) from natural language prompts. Integrates free LLM APIs (Groq and Google Gemini) for fast, high-quality code generation. Built with the help of GitHub Copilot agent. Provides 5 MCP tools for Claude Desktop and other AI clients, enabling seamless website creation via MCP protocol.",
+  technologies: ["TypeScript", "Node.js", "Groq", "Gemini", "MCP Protocol"],
+  githubUrl: "https://github.com/lasindu-themiya/mcpwebgenerator.git",
+  imageUrl: "/images/mcpwebgenerator.png"
+}
 ];
 
 export const education = [
