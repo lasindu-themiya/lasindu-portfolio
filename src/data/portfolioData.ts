@@ -125,14 +125,23 @@ export const projects: Project[] = [
     imageUrl: "/images/eventhub.png"
   },
   {
-  id: 5,
-  title: "MCP Website Generator",
-  description: "An AI-powered MCP server that generates complete, single-file websites (HTML, CSS, JS embedded) from natural language prompts. Integrates free LLM APIs (Groq and Google Gemini) for fast, high-quality code generation. Built with the help of GitHub Copilot agent. Provides 5 MCP tools for Claude Desktop and other AI clients, enabling seamless website creation via MCP protocol.",
-  technologies: ["TypeScript", "Node.js", "Groq", "Gemini", "MCP Protocol"],
-  githubUrl: "https://github.com/lasindu-themiya/mcpwebgenerator.git",
-  imageUrl: "/images/mcpwebgenerator.png"
-}
+    id: 5,
+    title: "MCP Website Generator",
+    description: "An AI-powered MCP server that generates complete, single-file websites (HTML, CSS, JS embedded) from natural language prompts. Integrates free LLM APIs (Groq and Google Gemini) for fast, high-quality code generation. Built with the help of GitHub Copilot agent. Provides 5 MCP tools for Claude Desktop and other AI clients, enabling seamless website creation via MCP protocol.",
+    technologies: ["TypeScript", "Node.js", "Groq", "Gemini", "MCP Protocol"],
+    githubUrl: "https://github.com/lasindu-themiya/mcpwebgenerator.git",
+    imageUrl: "/images/mcpwebgenerator.png"
+  },
+  {
+    id: 6,
+    title: "Resume-to-Job-Matcher - AI-Powered Job Classification",
+    description: "An end-to-end deep learning system that analyzes resumes and predicts optimal job categories using fine-tuned Sentence Transformers. Features real-time PDF processing, interactive web interface, and RESTful API. Achieved 85%+ accuracy on multi-class classification using advanced NLP techniques, transfer learning, and stratified data splitting with Adam optimization.",
+    technologies: ["Python", "PyTorch", "Transformers", "FastAPI", "Streamlit", "scikit-learn"],
+    githubUrl: "https://github.com/lasindu-themiya/resume_to_job_predictor.git",
+    imageUrl: "/images/resume-to-job-matcher.png"
+  }
 ];
+
 
 export const education = [
   {
