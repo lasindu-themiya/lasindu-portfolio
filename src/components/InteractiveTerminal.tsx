@@ -1,12 +1,7 @@
 import React, { useState, useRef, useEffect, useCallback } from 'react';
-import styled, { keyframes } from 'styled-components';
+import styled from 'styled-components';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Terminal as TerminalIcon, X, Minus } from 'lucide-react';
-
-const blink = keyframes`
-  0%, 100% { opacity: 1; }
-  50% { opacity: 0; }
-`;
 
 const ToggleButton = styled(motion.button)`
   position: fixed;

@@ -250,7 +250,7 @@ const Projects: React.FC = () => {
   return (
     <ProjectsContainer id="projects">
       <Container>
-        <SectionTitle>// PROJECTS</SectionTitle>
+        <SectionTitle>{'// PROJECTS'}</SectionTitle>
         
         <FilterButtons>
           {filterOptions.map(option => (

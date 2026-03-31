@@ -351,7 +351,7 @@ const Contact: React.FC = () => {
   return (
     <ContactContainer id="contact">
       <Container>
-        <SectionTitle>// CONTACT</SectionTitle>
+        <SectionTitle>{'// CONTACT'}</SectionTitle>
         
         <ContactContent>
           <ContactInfoSection

@@ -192,7 +192,7 @@ const Skills: React.FC = () => {
   return (
     <SkillsContainer id="skills">
       <Container>
-        <SectionTitle>// SKILLS</SectionTitle>
+        <SectionTitle>{'// SKILLS'}</SectionTitle>
         
         <SkillsOverview>
           <motion.div

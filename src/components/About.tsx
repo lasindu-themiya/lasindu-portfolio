@@ -1,7 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
 import { motion } from 'framer-motion';
-import { Container, Section, SectionTitle, Tag } from '../styles/GlobalStyles';
+import { Container, Section, SectionTitle } from '../styles/GlobalStyles';
 import { personalInfo, education, certifications } from '../data/portfolioData';
 import { Icon } from './icons/IconMappings';
 
@@ -271,7 +271,7 @@ const About: React.FC = () => {
   return (
     <AboutContainer id="about">
       <Container>
-        <SectionTitle>// ABOUT</SectionTitle>
+        <SectionTitle>{'// ABOUT'}</SectionTitle>
         
         <AboutContent>
           <TerminalWindow

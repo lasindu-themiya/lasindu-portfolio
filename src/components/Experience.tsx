@@ -174,7 +174,7 @@ const Experience: React.FC = () => {
   return (
     <ExperienceContainer id="experience">
       <Container>
-        <SectionTitle>// EXPERIENCE</SectionTitle>
+        <SectionTitle>{'// EXPERIENCE'}</SectionTitle>
         
         <Timeline>
           {experiences.map((experience, index) => (

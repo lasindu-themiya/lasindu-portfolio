@@ -5,14 +5,7 @@ const scanline = keyframes`
   100% { transform: translateY(100vh); }
 `;
 
-const flicker = keyframes`
-  0%, 100% { opacity: 1; }
-  92% { opacity: 1; }
-  93% { opacity: 0.8; }
-  94% { opacity: 1; }
-  95% { opacity: 0.6; }
-  96% { opacity: 1; }
-`;
+/* flicker animation reserved for future use */
 
 const glowPulse = keyframes`
   0%, 100% { box-shadow: 0 0 5px rgba(0, 212, 255, 0.3), 0 0 10px rgba(0, 212, 255, 0.1); }
