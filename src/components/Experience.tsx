@@ -5,173 +5,160 @@ import { Container, Section, SectionTitle, Tag } from '../styles/GlobalStyles';
 import { experiences } from '../data/portfolioData';
 import { Icon } from './icons/IconMappings';
 
-const ExperienceContainer = styled(Section)``;
+const ExperienceContainer = styled(Section)`
+  background: ${({ theme }) => theme.colors.background};
+`;
 
 const Timeline = styled.div`
   position: relative;
-  max-width: 1000px;
+  max-width: 900px;
   margin: 0 auto;
 
   &::before {
     content: '';
     position: absolute;
-    left: 50%;
-    transform: translateX(-50%);
+    left: 30px;
     top: 0;
     bottom: 0;
     width: 2px;
-    background: ${({ theme }) => theme.colors.border};
+    background: linear-gradient(to bottom, 
+      ${({ theme }) => theme.colors.arcanePurple},
+      ${({ theme }) => theme.colors.hexBlue},
+      ${({ theme }) => theme.colors.arcanePurple}
+    );
+    box-shadow: 0 0 10px rgba(123, 47, 190, 0.3);
 
-    @media (max-width: ${({ theme }) => theme.breakpoints.tablet}) {
-      left: 30px;
+    @media (max-width: ${({ theme }) => theme.breakpoints.mobile}) {
+      left: 20px;
     }
   }
 `;
 
-const ExperienceItem = styled(motion.div)<{ index: number }>`
+const TimelineItem = styled(motion.div)`
   position: relative;
-  margin-bottom: ${({ theme }) => theme.spacing.xxl};
-  width: calc(50% - 40px);
-  
-  ${({ index, theme }) => index % 2 === 0 ? `
-    left: 0;
-    padding-right: ${theme.spacing.lg};
-    
-    .timeline-content {
-      text-align: right;
-    }
-    
-    .timeline-arrow {
-      right: -8px;
-      border-left: 8px solid ${theme.colors.cardBg};
-      border-right: none;
-    }
-  ` : `
-    left: calc(50% + 40px);
-    padding-left: ${theme.spacing.lg};
-    
-    .timeline-content {
-      text-align: left;
-    }
-    
-    .timeline-arrow {
-      left: -8px;
-      border-right: 8px solid ${theme.colors.cardBg};
-      border-left: none;
-    }
-  `}
+  margin-bottom: 2.5rem;
+  padding-left: 70px;
 
-  @media (max-width: ${({ theme }) => theme.breakpoints.tablet}) {
-    width: calc(100% - 80px);
-    left: 60px !important;
-    padding-left: ${({ theme }) => theme.spacing.lg} !important;
-    padding-right: 0 !important;
-    
-    .timeline-content {
-      text-align: left !important;
-    }
-    
-    .timeline-arrow {
-      left: -8px !important;
-      right: auto !important;
-      border-right: 8px solid ${({ theme }) => theme.colors.cardBg} !important;
-      border-left: none !important;
-    }
+  @media (max-width: ${({ theme }) => theme.breakpoints.mobile}) {
+    padding-left: 50px;
+    margin-bottom: 2rem;
   }
 `;
 
-const TimelineIcon = styled.div<{ index: number }>`
+const TimelineDot = styled.div`
   position: absolute;
-  width: 40px;
-  height: 40px;
-  background: ${({ theme }) => theme.colors.gradient};
+  left: 21px;
+  top: 1.2rem;
+  width: 20px;
+  height: 20px;
   border-radius: 50%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  color: ${({ theme }) => theme.colors.white};
-  font-size: 1rem;
+  background: ${({ theme }) => theme.colors.gradient};
+  border: 2px solid ${({ theme }) => theme.colors.background};
   z-index: 2;
-  
-  ${({ index }) => index % 2 === 0 ? `
-    right: -60px;
-  ` : `
-    left: -60px;
-  `}
+  box-shadow: 0 0 12px rgba(0, 212, 255, 0.4);
 
-  @media (max-width: ${({ theme }) => theme.breakpoints.tablet}) {
-    left: -60px !important;
-    right: auto !important;
+  @media (max-width: ${({ theme }) => theme.breakpoints.mobile}) {
+    left: 11px;
+    width: 18px;
+    height: 18px;
   }
 `;
 
-const ExperienceCard = styled.div`
-  background: ${({ theme }) => theme.colors.cardBg};
-  border: 1px solid ${({ theme }) => theme.colors.border};
-  border-radius: ${({ theme }) => theme.borderRadius.large};
-  box-shadow: ${({ theme }) => theme.shadows.medium};
-  padding: ${({ theme }) => theme.spacing.lg};
-  position: relative;
+const ExpCard = styled.div`
+  background: rgba(10, 6, 20, 0.85);
+  border: 1px solid rgba(0, 212, 255, 0.15);
+  border-radius: 6px;
+  overflow: hidden;
+  backdrop-filter: blur(10px);
   transition: all 0.3s ease;
 
   &:hover {
-    transform: translateY(-5px);
-    box-shadow: ${({ theme }) => theme.shadows.hover};
+    border-color: ${({ theme }) => theme.colors.hexBlue};
+    box-shadow: 0 0 20px rgba(0, 212, 255, 0.1);
   }
+`;
 
-  .timeline-arrow {
-    position: absolute;
-    top: 30px;
-    width: 0;
-    height: 0;
-    border-top: 8px solid transparent;
-    border-bottom: 8px solid transparent;
+const CardHeader = styled.div`
+  padding: 0.6rem 1rem;
+  background: rgba(123, 47, 190, 0.1);
+  border-bottom: 1px solid rgba(0, 212, 255, 0.1);
+  font-family: 'Fira Code', monospace;
+  font-size: 0.75rem;
+  color: ${({ theme }) => theme.colors.textLight};
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+
+  .dots {
+    display: flex;
+    gap: 0.35rem;
+    span {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      &:nth-child(1) { background: #ff5f57; }
+      &:nth-child(2) { background: #febc2e; }
+      &:nth-child(3) { background: #28c840; }
+    }
+  }
+`;
+
+const CardBody = styled.div`
+  padding: 1.25rem 1.5rem;
+
+  @media (max-width: ${({ theme }) => theme.breakpoints.mobile}) {
+    padding: 1rem;
   }
 `;
 
 const CompanyName = styled.h3`
-  font-size: 1.25rem;
-  font-weight: 700;
-  color: ${({ theme }) => theme.colors.primary};
-  margin-bottom: ${({ theme }) => theme.spacing.xs};
+  font-family: 'Orbitron', sans-serif;
+  font-size: 1rem;
+  font-weight: 600;
+  color: ${({ theme }) => theme.colors.hexBlue};
+  margin-bottom: 0.25rem;
+  letter-spacing: 1px;
+  text-shadow: 0 0 10px rgba(0, 212, 255, 0.2);
 `;
 
 const Position = styled.h4`
-  font-size: 1.125rem;
-  font-weight: 600;
-  color: ${({ theme }) => theme.colors.text};
-  margin-bottom: ${({ theme }) => theme.spacing.sm};
+  font-size: 0.9rem;
+  font-weight: 500;
+  color: ${({ theme }) => theme.colors.arcaneGold};
+  margin-bottom: 0.75rem;
 `;
 
 const Duration = styled.div`
-  display: flex;
+  display: inline-flex;
   align-items: center;
-  gap: ${({ theme }) => theme.spacing.xs};
+  gap: 0.4rem;
   color: ${({ theme }) => theme.colors.textLight};
-  font-size: 0.875rem;
-  margin-bottom: ${({ theme }) => theme.spacing.md};
-
-  svg {
-    color: ${({ theme }) => theme.colors.primary};
-  }
+  font-size: 0.75rem;
+  margin-bottom: 1rem;
+  background: rgba(123, 47, 190, 0.1);
+  padding: 0.25rem 0.75rem;
+  border-radius: 3px;
+  border: 1px solid rgba(123, 47, 190, 0.2);
+  font-family: 'Fira Code', monospace;
 `;
 
 const Description = styled.ul`
   list-style: none;
-  margin-bottom: ${({ theme }) => theme.spacing.md};
+  margin-bottom: 1rem;
 
   li {
     position: relative;
-    padding-left: ${({ theme }) => theme.spacing.md};
-    margin-bottom: ${({ theme }) => theme.spacing.xs};
+    padding-left: 1.25rem;
+    margin-bottom: 0.4rem;
     color: ${({ theme }) => theme.colors.textLight};
     line-height: 1.6;
+    font-size: 0.8rem;
 
     &::before {
       content: '▸';
       position: absolute;
       left: 0;
-      color: ${({ theme }) => theme.colors.primary};
+      color: ${({ theme }) => theme.colors.arcanePurple};
       font-weight: bold;
     }
   }
@@ -180,53 +167,57 @@ const Description = styled.ul`
 const Technologies = styled.div`
   display: flex;
   flex-wrap: wrap;
-  gap: ${({ theme }) => theme.spacing.xs};
+  gap: 0.4rem;
 `;
 
 const Experience: React.FC = () => {
   return (
     <ExperienceContainer id="experience">
       <Container>
-        <SectionTitle>Work Experience</SectionTitle>
+        <SectionTitle>// EXPERIENCE</SectionTitle>
         
         <Timeline>
           {experiences.map((experience, index) => (
-            <ExperienceItem
+            <TimelineItem
               key={experience.id}
-              index={index}
-              initial={{ opacity: 0, x: index % 2 === 0 ? -50 : 50 }}
+              initial={{ opacity: 0, x: -30 }}
               whileInView={{ opacity: 1, x: 0 }}
-              transition={{ duration: 0.6, delay: index * 0.2 }}
+              transition={{ duration: 0.5, delay: index * 0.15 }}
               viewport={{ once: true }}
             >
-              <TimelineIcon index={index}>
-                <Icon name="FaBriefcase" size={20} />
-              </TimelineIcon>
+              <TimelineDot />
               
-              <ExperienceCard className="timeline-content">
-                <div className="timeline-arrow"></div>
+              <ExpCard>
+                <CardHeader>
+                  <div className="dots">
+                    <span /><span /><span />
+                  </div>
+                  cat experience_{String(index + 1).padStart(2, '0')}.log
+                </CardHeader>
                 
-                <CompanyName>{experience.company}</CompanyName>
-                <Position>{experience.position}</Position>
-                
-                <Duration>
-                  <Icon name="FaCalendarAlt" size={16} />
-                  {experience.duration}
-                </Duration>
-                
-                <Description>
-                  {experience.description.map((item, idx) => (
-                    <li key={idx}>{item}</li>
-                  ))}
-                </Description>
-                
-                <Technologies>
-                  {experience.technologies.map((tech, idx) => (
-                    <Tag key={idx}>{tech}</Tag>
-                  ))}
-                </Technologies>
-              </ExperienceCard>
-            </ExperienceItem>
+                <CardBody>
+                  <CompanyName>{experience.company}</CompanyName>
+                  <Position>{experience.position}</Position>
+                  
+                  <Duration>
+                    <Icon name="FaCalendarAlt" size={12} />
+                    {experience.duration}
+                  </Duration>
+                  
+                  <Description>
+                    {experience.description.map((item, idx) => (
+                      <li key={idx}>{item}</li>
+                    ))}
+                  </Description>
+                  
+                  <Technologies>
+                    {experience.technologies.map((tech, idx) => (
+                      <Tag key={idx}>{tech}</Tag>
+                    ))}
+                  </Technologies>
+                </CardBody>
+              </ExpCard>
+            </TimelineItem>
           ))}
         </Timeline>
       </Container>

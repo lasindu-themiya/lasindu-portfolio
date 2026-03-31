@@ -1,12 +1,30 @@
 import React, { useState } from 'react';
-import styled from 'styled-components';
+import styled, { keyframes } from 'styled-components';
 import { motion } from 'framer-motion';
 import { Container, Section, SectionTitle, Button } from '../styles/GlobalStyles';
 import { contactInfo } from '../data/portfolioData';
 import { Icon } from './icons/IconMappings';
 
+const blink = keyframes`
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0; }
+`;
+
 const ContactContainer = styled(Section)`
   background: ${({ theme }) => theme.colors.backgroundAlt};
+  position: relative;
+
+  &::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: url('/images/arcane/section-bg.png') center/cover no-repeat;
+    opacity: 0.03;
+    pointer-events: none;
+  }
 `;
 
 const ContactContent = styled.div`
@@ -21,205 +39,249 @@ const ContactContent = styled.div`
   }
 `;
 
-const ContactInfo = styled(motion.div)`
-  h3 {
-    font-size: 1.5rem;
-    margin-bottom: ${({ theme }) => theme.spacing.md};
-    color: ${({ theme }) => theme.colors.text};
-  }
+const ContactInfoSection = styled(motion.div)``;
 
-  p {
-    font-size: 1.125rem;
-    line-height: 1.6;
-    color: ${({ theme }) => theme.colors.textLight};
-    margin-bottom: ${({ theme }) => theme.spacing.xl};
-  }
+const InfoTerminal = styled.div`
+  background: rgba(10, 6, 20, 0.85);
+  border: 1px solid rgba(0, 212, 255, 0.15);
+  border-radius: 6px;
+  overflow: hidden;
+  backdrop-filter: blur(10px);
 `;
 
-const ContactItem = styled(motion.div)`
+const TermBar = styled.div`
+  padding: 0.6rem 1rem;
+  background: rgba(123, 47, 190, 0.1);
+  border-bottom: 1px solid rgba(0, 212, 255, 0.1);
+  font-family: 'Fira Code', monospace;
+  font-size: 0.7rem;
+  color: ${({ theme }) => theme.colors.textLight};
   display: flex;
   align-items: center;
-  gap: ${({ theme }) => theme.spacing.md};
-  margin-bottom: ${({ theme }) => theme.spacing.lg};
-  padding: ${({ theme }) => theme.spacing.md};
-  background: ${({ theme }) => theme.colors.cardBg};
-  border: 1px solid ${({ theme }) => theme.colors.border};
-  border-radius: ${({ theme }) => theme.borderRadius.medium};
-  box-shadow: ${({ theme }) => theme.shadows.small};
-  transition: all 0.3s ease;
+  gap: 0.4rem;
 
-  &:hover {
-    transform: translateX(10px);
-    box-shadow: ${({ theme }) => theme.shadows.medium};
-  }
-
-  .icon {
-    font-size: 1.25rem;
-    color: ${({ theme }) => theme.colors.primary};
-    background: ${({ theme }) => theme.colors.backgroundAlt};
-    padding: ${({ theme }) => theme.spacing.sm};
-    border-radius: 50%;
-    min-width: 50px;
-    height: 50px;
+  .dots {
     display: flex;
-    align-items: center;
-    justify-content: center;
-  }
-
-  .content {
-    .label {
-      font-weight: 600;
-      color: ${({ theme }) => theme.colors.text};
-      margin-bottom: ${({ theme }) => theme.spacing.xs};
-    }
-
-    .value {
-      color: ${({ theme }) => theme.colors.textLight};
-      word-break: break-all;
-
-      a {
-        color: ${({ theme }) => theme.colors.primary};
-        text-decoration: none;
-        transition: color 0.3s ease;
-
-        &:hover {
-          color: ${({ theme }) => theme.colors.primaryDark};
-          text-decoration: underline;
-        }
-      }
+    gap: 0.3rem;
+    span {
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      &:nth-child(1) { background: #ff5f57; }
+      &:nth-child(2) { background: #febc2e; }
+      &:nth-child(3) { background: #28c840; }
     }
   }
 `;
 
-const ContactForm = styled(motion.form)`
-  background: ${({ theme }) => theme.colors.cardBg};
-  border: 1px solid ${({ theme }) => theme.colors.border};
-  padding: ${({ theme }) => theme.spacing.xl};
-  border-radius: ${({ theme }) => theme.borderRadius.large};
-  box-shadow: ${({ theme }) => theme.shadows.medium};
+const TermBody = styled.div`
+  padding: 1.5rem;
+  font-family: 'Fira Code', monospace;
+  font-size: 0.85rem;
+  line-height: 2;
+`;
 
-  h3 {
-    font-size: 1.5rem;
-    margin-bottom: ${({ theme }) => theme.spacing.lg};
+const InfoLine = styled.div`
+  margin-bottom: 0.25rem;
+  
+  .key {
+    color: ${({ theme }) => theme.colors.arcanePurple};
+  }
+  .value {
     color: ${({ theme }) => theme.colors.text};
-    text-align: center;
+  }
+  a {
+    color: ${({ theme }) => theme.colors.hexBlue};
+    text-decoration: none;
+    transition: all 0.3s ease;
+
+    &:hover {
+      text-shadow: 0 0 8px rgba(0, 212, 255, 0.3);
+    }
   }
 `;
 
-const FormGroup = styled.div`
-  margin-bottom: ${({ theme }) => theme.spacing.lg};
-  position: relative;
-
-  label {
-    display: block;
-    margin-bottom: ${({ theme }) => theme.spacing.xs};
-    color: ${({ theme }) => theme.colors.text};
-    font-weight: 600;
-  }
-
-  .required {
-    color: ${({ theme }) => theme.colors.error};
-  }
+const Prompt = styled.span`
+  color: ${({ theme }) => theme.colors.terminalGreen};
 `;
 
-const FormInput = styled.input`
-  width: 100%;
-  padding: ${({ theme }) => theme.spacing.md};
-  border: 2px solid ${({ theme }) => theme.colors.border};
-  border-radius: ${({ theme }) => theme.borderRadius.medium};
-  font-size: 1rem;
-  transition: all 0.3s ease;
-  background: ${({ theme }) => theme.colors.background};
-  color: ${({ theme }) => theme.colors.text};
-
-  &:focus {
-    outline: none;
-    border-color: ${({ theme }) => theme.colors.primary};
-    background: ${({ theme }) => theme.colors.background};
-    box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
-  }
-
-  &::placeholder {
-    color: ${({ theme }) => theme.colors.textLight};
-  }
-`;
-
-const FormTextarea = styled.textarea`
-  width: 100%;
-  padding: ${({ theme }) => theme.spacing.md};
-  border: 2px solid ${({ theme }) => theme.colors.border};
-  border-radius: ${({ theme }) => theme.borderRadius.medium};
-  font-size: 1rem;
-  transition: all 0.3s ease;
-  background: ${({ theme }) => theme.colors.background};
-  color: ${({ theme }) => theme.colors.text};
-  min-height: 120px;
-  resize: vertical;
-  font-family: inherit;
-
-  &:focus {
-    outline: none;
-    border-color: ${({ theme }) => theme.colors.primary};
-    background: ${({ theme }) => theme.colors.background};
-    box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
-  }
-
-  &::placeholder {
-    color: ${({ theme }) => theme.colors.textLight};
-  }
-`;
-
-const SubmitButton = styled(Button)`
-  width: 100%;
-  justify-content: center;
-  padding: ${({ theme }) => theme.spacing.md};
-  font-size: 1.125rem;
-
-  &:disabled {
-    opacity: 0.6;
-    cursor: not-allowed;
-  }
-`;
-
-const SocialLinks = styled.div`
+const SocialRow = styled.div`
   display: flex;
-  gap: ${({ theme }) => theme.spacing.md};
+  gap: 0.75rem;
+  margin-top: 1.5rem;
   justify-content: center;
-  margin-top: ${({ theme }) => theme.spacing.xl};
 `;
 
 const SocialLink = styled.a`
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 50px;
-  height: 50px;
-  background: ${({ theme }) => theme.colors.cardBg};
-  color: ${({ theme }) => theme.colors.primary};
-  border: 1px solid ${({ theme }) => theme.colors.border};
-  border-radius: 50%;
-  box-shadow: ${({ theme }) => theme.shadows.small};
+  width: 42px;
+  height: 42px;
+  background: rgba(123, 47, 190, 0.1);
+  color: ${({ theme }) => theme.colors.arcanePurple};
+  border: 1px solid rgba(123, 47, 190, 0.2);
+  border-radius: 4px;
   transition: all 0.3s ease;
-  font-size: 1.25rem;
 
   &:hover {
-    background: ${({ theme }) => theme.colors.primary};
-    color: ${({ theme }) => theme.colors.white};
-    transform: translateY(-5px);
-    box-shadow: ${({ theme }) => theme.shadows.medium};
+    background: rgba(0, 212, 255, 0.15);
+    border-color: ${({ theme }) => theme.colors.hexBlue};
+    color: ${({ theme }) => theme.colors.hexBlue};
+    box-shadow: 0 0 15px rgba(0, 212, 255, 0.2);
+    transform: translateY(-3px);
+  }
+`;
+
+const ContactForm = styled(motion.form)`
+  background: rgba(10, 6, 20, 0.85);
+  border: 1px solid rgba(0, 212, 255, 0.15);
+  border-radius: 6px;
+  overflow: hidden;
+  backdrop-filter: blur(10px);
+`;
+
+const FormBar = styled.div`
+  padding: 0.6rem 1rem;
+  background: rgba(123, 47, 190, 0.1);
+  border-bottom: 1px solid rgba(0, 212, 255, 0.1);
+  font-family: 'Fira Code', monospace;
+  font-size: 0.7rem;
+  color: ${({ theme }) => theme.colors.textLight};
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+
+  .dots {
+    display: flex;
+    gap: 0.3rem;
+    span {
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      &:nth-child(1) { background: #ff5f57; }
+      &:nth-child(2) { background: #febc2e; }
+      &:nth-child(3) { background: #28c840; }
+    }
+  }
+`;
+
+const FormBody = styled.div`
+  padding: 1.5rem;
+`;
+
+const FormGroup = styled.div`
+  margin-bottom: 1.25rem;
+
+  label {
+    display: block;
+    margin-bottom: 0.5rem;
+    color: ${({ theme }) => theme.colors.textLight};
+    font-family: 'Fira Code', monospace;
+    font-size: 0.8rem;
+    
+    &::before {
+      content: '❯ ';
+      color: ${({ theme }) => theme.colors.arcanePurple};
+    }
+
+    .required {
+      color: ${({ theme }) => theme.colors.error};
+    }
+  }
+`;
+
+const FormInput = styled.input`
+  width: 100%;
+  padding: 0.75rem 1rem;
+  border: 1px solid rgba(0, 212, 255, 0.15);
+  border-radius: 3px;
+  font-size: 0.85rem;
+  font-family: 'Fira Code', monospace;
+  transition: all 0.3s ease;
+  background: rgba(10, 6, 20, 0.6);
+  color: ${({ theme }) => theme.colors.text};
+
+  &:focus {
+    outline: none;
+    border-color: ${({ theme }) => theme.colors.hexBlue};
+    box-shadow: 0 0 10px rgba(0, 212, 255, 0.15);
+  }
+
+  &::placeholder {
+    color: ${({ theme }) => theme.colors.textLight};
+    opacity: 0.5;
+  }
+`;
+
+const FormTextarea = styled.textarea`
+  width: 100%;
+  padding: 0.75rem 1rem;
+  border: 1px solid rgba(0, 212, 255, 0.15);
+  border-radius: 3px;
+  font-size: 0.85rem;
+  font-family: 'Fira Code', monospace;
+  transition: all 0.3s ease;
+  background: rgba(10, 6, 20, 0.6);
+  color: ${({ theme }) => theme.colors.text};
+  min-height: 100px;
+  resize: vertical;
+
+  &:focus {
+    outline: none;
+    border-color: ${({ theme }) => theme.colors.hexBlue};
+    box-shadow: 0 0 10px rgba(0, 212, 255, 0.15);
+  }
+
+  &::placeholder {
+    color: ${({ theme }) => theme.colors.textLight};
+    opacity: 0.5;
+  }
+`;
+
+const ExecuteButton = styled(Button)`
+  width: 100%;
+  justify-content: center;
+  padding: 0.75rem;
+  font-size: 0.85rem;
+  background: linear-gradient(135deg, rgba(123, 47, 190, 0.3), rgba(0, 212, 255, 0.2));
+  border: 1px solid rgba(0, 212, 255, 0.3);
+  color: ${({ theme }) => theme.colors.hexBlue};
+
+  &:hover {
+    background: linear-gradient(135deg, rgba(123, 47, 190, 0.5), rgba(0, 212, 255, 0.3));
+    box-shadow: ${({ theme }) => theme.shadows.glow};
+    color: white;
+  }
+
+  &:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
+
+  .cursor {
+    display: inline-block;
+    width: 6px;
+    height: 14px;
+    background: ${({ theme }) => theme.colors.hexBlue};
+    animation: ${blink} 1s step-end infinite;
+    margin-left: 4px;
+    vertical-align: middle;
   }
 `;
 
 const StatusMessage = styled.div<{ type: 'success' | 'error' }>`
-  padding: ${({ theme }) => theme.spacing.md};
-  border-radius: ${({ theme }) => theme.borderRadius.medium};
-  margin-bottom: ${({ theme }) => theme.spacing.lg};
-  background: ${props => props.type === 'success' ? '#d4edda' : '#f8d7da'};
-  color: ${props => props.type === 'success' ? '#155724' : '#721c24'};
-  border: 1px solid ${props => props.type === 'success' ? '#c3e6cb' : '#f5c6cb'};
+  padding: 0.75rem 1rem;
+  border-radius: 3px;
+  margin-bottom: 1rem;
+  font-family: 'Fira Code', monospace;
+  font-size: 0.8rem;
+  background: ${props => props.type === 'success' ? 'rgba(0, 255, 65, 0.1)' : 'rgba(255, 68, 68, 0.1)'};
+  color: ${props => props.type === 'success' ? '#00ff41' : '#ff4444'};
+  border: 1px solid ${props => props.type === 'success' ? 'rgba(0, 255, 65, 0.2)' : 'rgba(255, 68, 68, 0.2)'};
   display: flex;
   align-items: center;
-  gap: ${({ theme }) => theme.spacing.sm};
+  gap: 0.5rem;
 `;
 
 const Contact: React.FC = () => {
@@ -241,8 +303,6 @@ const Contact: React.FC = () => {
       ...prev,
       [name]: value
     }));
-    
-    // Clear status when user starts typing
     if (status.type) {
       setStatus({ type: null, message: '' });
     }
@@ -254,16 +314,13 @@ const Contact: React.FC = () => {
     setStatus({ type: null, message: '' });
     
     try {
-      // Use relative path for production, localhost for development
       const apiUrl = process.env.NODE_ENV === 'development' 
         ? 'http://localhost:3001/api/contact'
         : '/api/contact';
         
       const response = await fetch(apiUrl, {
         method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
+        headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(formData),
       });
 
@@ -272,88 +329,71 @@ const Contact: React.FC = () => {
       if (result.success) {
         setStatus({
           type: 'success',
-          message: 'Thank you for your message! I\'ll get back to you soon.'
+          message: '[OK] Message transmitted successfully.'
         });
         setFormData({ name: '', email: '', subject: '', message: '' });
       } else {
         setStatus({
           type: 'error',
-          message: result.message || 'Failed to send message. Please try again.'
+          message: `[ERROR] ${result.message || 'Transmission failed. Retry.'}`
         });
       }
     } catch (error) {
       setStatus({
         type: 'error',
-        message: 'Network error. Please check your connection and try again.'
+        message: '[ERROR] Network failure. Check connection.'
       });
     } finally {
       setIsSubmitting(false);
     }
   };
 
-  const contactItems = [
-    {
-      icon: <Icon name="FaEnvelope" className="icon" size={24} />,
-      label: 'Email',
-      value: contactInfo.email,
-      link: `mailto:${contactInfo.email}`
-    },
-    {
-      icon: <Icon name="FaPhone" className="icon" size={24} />,
-      label: 'Phone',
-      value: contactInfo.phone || 'Available on request',
-      link: contactInfo.phone ? `tel:${contactInfo.phone}` : undefined
-    },
-    {
-      icon: <Icon name="FaMapMarkerAlt" className="icon" size={24} />,
-      label: 'Location',
-      value: contactInfo.location,
-      link: undefined
-    }
-  ];
-
   return (
     <ContactContainer id="contact">
       <Container>
-        <SectionTitle>Get In Touch</SectionTitle>
+        <SectionTitle>// CONTACT</SectionTitle>
         
         <ContactContent>
-          <ContactInfo
+          <ContactInfoSection
             initial={{ opacity: 0, x: -50 }}
             whileInView={{ opacity: 1, x: 0 }}
             transition={{ duration: 0.6 }}
             viewport={{ once: true }}
           >
-            <h3>Let's Work Together</h3>
-            <p>
-              I'm always interested in new opportunities and exciting projects. 
-              Whether you have a project in mind, want to collaborate, or just 
-              want to say hello, feel free to reach out!
-            </p>
-
-            {contactItems.map((item, index) => (
-              <ContactItem
-                key={item.label}
-                initial={{ opacity: 0, x: -30 }}
-                whileInView={{ opacity: 1, x: 0 }}
-                transition={{ duration: 0.6, delay: index * 0.1 }}
-                viewport={{ once: true }}
-              >
-                {item.icon}
-                <div className="content">
-                  <div className="label">{item.label}</div>
-                  <div className="value">
-                    {item.link ? (
-                      <a href={item.link}>{item.value}</a>
-                    ) : (
-                      item.value
-                    )}
-                  </div>
+            <InfoTerminal>
+              <TermBar>
+                <div className="dots">
+                  <span /><span /><span />
                 </div>
-              </ContactItem>
-            ))}
+                system_info --contact
+              </TermBar>
+              <TermBody>
+                <InfoLine>
+                  <Prompt>❯ </Prompt>
+                  <span style={{ color: '#00ff41' }}>cat contact.cfg</span>
+                </InfoLine>
+                <InfoLine>
+                  <span className="key">  email</span>: <a href={`mailto:${contactInfo.email}`}>{contactInfo.email}</a>
+                </InfoLine>
+                {contactInfo.phone && (
+                  <InfoLine>
+                    <span className="key">  phone</span>: <a href={`tel:${contactInfo.phone}`}>{contactInfo.phone}</a>
+                  </InfoLine>
+                )}
+                <InfoLine>
+                  <span className="key">  location</span>: <span className="value">{contactInfo.location}</span>
+                </InfoLine>
+                <InfoLine>
+                  <span className="key">  status</span>: <span style={{ color: '#00ff41' }}>● ONLINE</span>
+                </InfoLine>
+                <InfoLine style={{ marginTop: '1rem' }}>
+                  <Prompt>❯ </Prompt>
+                  <span style={{ color: '#8b7faa' }}>Ready for new connections and collaborations.</span>
+                </InfoLine>
+              </TermBody>
+            </InfoTerminal>
 
-            <SocialLinks>
+            <SocialRow>
               {contactInfo.linkedin && (
                 <SocialLink 
                   href={contactInfo.linkedin} 
@@ -361,7 +401,7 @@ const Contact: React.FC = () => {
                   rel="noopener noreferrer"
                   title="LinkedIn"
                 >
-                  <Icon name="FaLinkedin" size={20} />
+                  <Icon name="FaLinkedin" size={18} />
                 </SocialLink>
               )}
               {contactInfo.github && (
@@ -371,11 +411,17 @@ const Contact: React.FC = () => {
                   rel="noopener noreferrer"
                   title="GitHub"
                 >
-                  <Icon name="FaGithub" size={20} />
+                  <Icon name="FaGithub" size={18} />
                 </SocialLink>
               )}
-            </SocialLinks>
-          </ContactInfo>
+              <SocialLink 
+                href={`mailto:${contactInfo.email}`}
+                title="Email"
+              >
+                <Icon name="FaEnvelope" size={18} />
+              </SocialLink>
+            </SocialRow>
+          </ContactInfoSection>
 
           <ContactForm
             initial={{ opacity: 0, x: 50 }}
@@ -384,92 +430,94 @@ const Contact: React.FC = () => {
             viewport={{ once: true }}
             onSubmit={handleSubmit}
           >
-            <h3>Send Me a Message</h3>
+            <FormBar>
+              <div className="dots">
+                <span /><span /><span />
+              </div>
+              compose_message.sh
+            </FormBar>
 
-            {status.type && (
-              <StatusMessage type={status.type}>
-                <Icon 
-                  name={status.type === 'success' ? 'FaCheckCircle' : 'FaExclamationTriangle'} 
-                  size={20} 
+            <FormBody>
+              {status.type && (
+                <StatusMessage type={status.type}>
+                  {status.message}
+                </StatusMessage>
+              )}
+
+              <FormGroup>
+                <label htmlFor="name">
+                  Enter name <span className="required">*</span>
+                </label>
+                <FormInput
+                  type="text"
+                  id="name"
+                  name="name"
+                  value={formData.name}
+                  onChange={handleInputChange}
+                  placeholder="your_name"
+                  required
+                  disabled={isSubmitting}
                 />
-                {status.message}
-              </StatusMessage>
-            )}
+              </FormGroup>
 
-            <FormGroup>
-              <label htmlFor="name">
-                <Icon name="FaUser" style={{ marginRight: '8px' }} size={16} />
-                Name <span className="required">*</span>
-              </label>
-              <FormInput
-                type="text"
-                id="name"
-                name="name"
-                value={formData.name}
-                onChange={handleInputChange}
-                placeholder="Your full name"
-                required
+              <FormGroup>
+                <label htmlFor="email">
+                  Enter email <span className="required">*</span>
+                </label>
+                <FormInput
+                  type="email"
+                  id="email"
+                  name="email"
+                  value={formData.email}
+                  onChange={handleInputChange}
+                  placeholder="you@domain.com"
+                  required
+                  disabled={isSubmitting}
+                />
+              </FormGroup>
+
+              <FormGroup>
+                <label htmlFor="subject">
+                  Enter subject <span className="required">*</span>
+                </label>
+                <FormInput
+                  type="text"
+                  id="subject"
+                  name="subject"
+                  value={formData.subject}
+                  onChange={handleInputChange}
+                  placeholder="subject_line"
+                  required
+                  disabled={isSubmitting}
+                />
+              </FormGroup>
+
+              <FormGroup>
+                <label htmlFor="message">
+                  Enter message <span className="required">*</span>
+                </label>
+                <FormTextarea
+                  id="message"
+                  name="message"
+                  value={formData.message}
+                  onChange={handleInputChange}
+                  placeholder="// write your message here..."
+                  required
+                  disabled={isSubmitting}
+                />
+              </FormGroup>
+
+              <ExecuteButton 
+                type="submit" 
                 disabled={isSubmitting}
-              />
-            </FormGroup>
-
-            <FormGroup>
-              <label htmlFor="email">
-                <Icon name="FaEnvelope" style={{ marginRight: '8px' }} size={16} />
-                Email <span className="required">*</span>
-              </label>
-              <FormInput
-                type="email"
-                id="email"
-                name="email"
-                value={formData.email}
-                onChange={handleInputChange}
-                placeholder="your.email@example.com"
-                required
-                disabled={isSubmitting}
-              />
-            </FormGroup>
-
-            <FormGroup>
-              <label htmlFor="subject">
-                <Icon name="FaCommentAlt" style={{ marginRight: '8px' }} size={16} />
-                Subject <span className="required">*</span>
-              </label>
-              <FormInput
-                type="text"
-                id="subject"
-                name="subject"
-                value={formData.subject}
-                onChange={handleInputChange}
-                placeholder="What's this about?"
-                required
-                disabled={isSubmitting}
-              />
-            </FormGroup>
-
-            <FormGroup>
-              <label htmlFor="message">
-                <Icon name="FaCommentAlt" style={{ marginRight: '8px' }} size={16} />
-                Message <span className="required">*</span>
-              </label>
-              <FormTextarea
-                id="message"
-                name="message"
-                value={formData.message}
-                onChange={handleInputChange}
-                placeholder="Tell me about your project or just say hello!"
-                required
-                disabled={isSubmitting}
-              />
-            </FormGroup>
-
-            <SubmitButton 
-              type="submit" 
-              disabled={isSubmitting}
-            >
-              <Icon name={isSubmitting ? 'FaSpinner' : 'FaPaperPlane'} size={16} />
-              {isSubmitting ? 'Sending...' : 'Send Message'}
-            </SubmitButton>
+              >
+                {isSubmitting ? (
+                  <>TRANSMITTING...</>
+                ) : (
+                  <>[EXECUTE] send_message<span className="cursor" /></>
+                )}
+              </ExecuteButton>
+            </FormBody>
           </ContactForm>
         </ContactContent>
       </Container>

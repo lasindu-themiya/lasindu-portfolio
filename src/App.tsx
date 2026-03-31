@@ -1,7 +1,6 @@
 import React from 'react';
 import { ThemeProvider } from 'styled-components';
-import { GlobalStyle, getTheme } from './styles/GlobalStyles';
-import { DarkModeProvider, useDarkMode } from './contexts/DarkModeContext';
+import { GlobalStyle, arcaneTheme } from './styles/GlobalStyles';
 import Navbar from './components/Navbar';
 import Hero from './components/Hero';
 import About from './components/About';
@@ -10,15 +9,13 @@ import Projects from './components/Projects';
 import Skills from './components/Skills';
 import Contact from './components/Contact';
 import Footer from './components/Footer';
+import InteractiveTerminal from './components/InteractiveTerminal';
 import { Analytics } from "@vercel/analytics/react";
 
-const AppContent: React.FC = () => {
-  const { isDarkMode } = useDarkMode();
-  const currentTheme = getTheme(isDarkMode);
-
+function App() {
   return (
-    <ThemeProvider theme={currentTheme}>
-      <GlobalStyle isDarkMode={isDarkMode} />
+    <ThemeProvider theme={arcaneTheme}>
+      <GlobalStyle />
       <div className="App">
         <Navbar />
         <Hero />
@@ -28,17 +25,10 @@ const AppContent: React.FC = () => {
         <Skills />
         <Contact />
         <Footer />
+        <InteractiveTerminal />
         <Analytics />
       </div>
     </ThemeProvider>
-  );
-};
-
-function App() {
-  return (
-    <DarkModeProvider>
-      <AppContent />
-    </DarkModeProvider>
   );
 }
 

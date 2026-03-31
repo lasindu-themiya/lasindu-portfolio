@@ -1,90 +1,160 @@
 import React from 'react';
 import styled from 'styled-components';
 import { motion } from 'framer-motion';
-import { Container, Section, SectionTitle, Grid } from '../styles/GlobalStyles';
+import { Container, Section, SectionTitle, Tag } from '../styles/GlobalStyles';
 import { personalInfo, education, certifications } from '../data/portfolioData';
 import { Icon } from './icons/IconMappings';
 
 const AboutContainer = styled(Section)`
   background: ${({ theme }) => theme.colors.backgroundAlt};
+  position: relative;
+
+  &::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: url('/images/arcane/section-bg.png') center/cover no-repeat;
+    opacity: 0.05;
+    pointer-events: none;
+  }
 `;
 
 const AboutContent = styled.div`
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: ${({ theme }) => theme.spacing.xxl};
-  align-items: center;
+  align-items: start;
 
   @media (max-width: ${({ theme }) => theme.breakpoints.tablet}) {
     grid-template-columns: 1fr;
     gap: ${({ theme }) => theme.spacing.xl};
-    text-align: center;
   }
 `;
 
-const AboutText = styled.div`
-  h3 {
-    font-size: 1.5rem;
-    margin-bottom: ${({ theme }) => theme.spacing.md};
-    color: ${({ theme }) => theme.colors.text};
+const TerminalWindow = styled(motion.div)`
+  background: rgba(10, 6, 20, 0.85);
+  border: 1px solid rgba(0, 212, 255, 0.2);
+  border-radius: 6px;
+  overflow: hidden;
+  backdrop-filter: blur(10px);
+`;
+
+const TerminalBar = styled.div`
+  display: flex;
+  align-items: center;
+  padding: 0.6rem 1rem;
+  background: rgba(123, 47, 190, 0.1);
+  border-bottom: 1px solid rgba(0, 212, 255, 0.15);
+  gap: 0.5rem;
+  
+  .dot {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    &.r { background: #ff5f57; }
+    &.y { background: #febc2e; }
+    &.g { background: #28c840; }
   }
 
-  p {
-    font-size: 1.125rem;
-    line-height: 1.8;
+  .title {
+    margin-left: 0.75rem;
     color: ${({ theme }) => theme.colors.textLight};
-    margin-bottom: ${({ theme }) => theme.spacing.md};
+    font-family: 'Fira Code', monospace;
+    font-size: 0.75rem;
   }
 `;
 
-const ProfileImage = styled.div`
+const TerminalBody = styled.div`
+  padding: 1.5rem;
+  font-family: 'Fira Code', monospace;
+  font-size: 0.85rem;
+  line-height: 1.8;
+`;
+
+const Prompt = styled.span`
+  color: ${({ theme }) => theme.colors.arcanePurple};
+  font-weight: 600;
+`;
+
+const Command = styled.span`
+  color: ${({ theme }) => theme.colors.terminalGreen};
+`;
+
+const OutputText = styled.p`
+  color: ${({ theme }) => theme.colors.textLight};
+  margin: 0.5rem 0;
+  padding-left: 1rem;
+  line-height: 1.7;
+  font-size: 0.85rem;
+`;
+
+const ProfileFrame = styled(motion.div)`
   position: relative;
   width: 100%;
-  max-width: 400px;
+  max-width: 380px;
   margin: 0 auto;
 
-  img {
+  img.profile {
     width: 100%;
-    border-radius: ${({ theme }) => theme.borderRadius.xl};
-    box-shadow: ${({ theme }) => theme.shadows.large};
+    border-radius: 6px;
+    border: 2px solid rgba(0, 212, 255, 0.3);
+    box-shadow: 
+      0 0 20px rgba(0, 212, 255, 0.15),
+      0 0 40px rgba(123, 47, 190, 0.1);
+    position: relative;
+    z-index: 2;
   }
 
-  &::before {
-    content: '';
+  .arcane-frame {
     position: absolute;
-    top: -10px;
-    left: -10px;
-    right: 10px;
-    bottom: 10px;
-    background: ${({ theme }) => theme.colors.gradient};
-    border-radius: ${({ theme }) => theme.borderRadius.xl};
-    z-index: -1;
+    top: -15px;
+    left: -15px;
+    right: -15px;
+    bottom: -15px;
+    background: url('/images/arcane/profile-frame.png') center/cover no-repeat;
+    opacity: 0.3;
+    z-index: 1;
+    pointer-events: none;
   }
 `;
 
-const StatsContainer = styled.div`
-  display: flex;
-  justify-content: space-around;
-  margin-top: ${({ theme }) => theme.spacing.xl};
-  flex-wrap: wrap;
-  gap: ${({ theme }) => theme.spacing.md};
+const StatsGrid = styled.div`
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 0.75rem;
+  margin-top: 1.5rem;
 `;
 
-const StatItem = styled.div`
+const StatBox = styled(motion.div)`
+  background: rgba(123, 47, 190, 0.1);
+  border: 1px solid rgba(0, 212, 255, 0.15);
+  border-radius: 4px;
+  padding: 1rem;
   text-align: center;
+  transition: all 0.3s ease;
+
+  &:hover {
+    border-color: ${({ theme }) => theme.colors.hexBlue};
+    box-shadow: 0 0 15px rgba(0, 212, 255, 0.15);
+  }
 
   .number {
-    font-size: 2rem;
+    font-family: 'Orbitron', sans-serif;
+    font-size: 1.5rem;
     font-weight: 700;
-    color: ${({ theme }) => theme.colors.primary};
-    display: block;
+    color: ${({ theme }) => theme.colors.hexBlue};
+    text-shadow: 0 0 10px rgba(0, 212, 255, 0.3);
   }
 
   .label {
-    font-size: 0.875rem;
+    font-size: 0.7rem;
     color: ${({ theme }) => theme.colors.textLight};
     text-transform: uppercase;
     letter-spacing: 1px;
+    margin-top: 0.25rem;
   }
 `;
 
@@ -92,213 +162,227 @@ const EducationSection = styled.div`
   margin-top: ${({ theme }) => theme.spacing.xxl};
 `;
 
-const EducationGrid = styled(Grid)`
+const EduGrid = styled.div`
+  display: grid;
   grid-template-columns: 1fr 1fr;
+  gap: ${({ theme }) => theme.spacing.lg};
 
   @media (max-width: ${({ theme }) => theme.breakpoints.tablet}) {
     grid-template-columns: 1fr;
   }
 `;
 
-const EducationCard = styled(motion.div)`
-  background: ${({ theme }) => theme.colors.cardBg};
-  padding: ${({ theme }) => theme.spacing.lg};
-  border-radius: ${({ theme }) => theme.borderRadius.large};
-  box-shadow: ${({ theme }) => theme.shadows.medium};
-  border: 1px solid ${({ theme }) => theme.colors.border};
-  transition: transform 0.3s ease;
+const EduCard = styled(motion.div)`
+  background: rgba(10, 6, 20, 0.85);
+  border: 1px solid rgba(0, 212, 255, 0.15);
+  border-radius: 6px;
+  padding: 1.5rem;
+  backdrop-filter: blur(10px);
+  transition: all 0.3s ease;
 
   &:hover {
-    transform: translateY(-5px);
-    box-shadow: ${({ theme }) => theme.shadows.hover};
+    border-color: ${({ theme }) => theme.colors.hexBlue};
+    box-shadow: 0 0 20px rgba(0, 212, 255, 0.1);
   }
 
-  .icon {
-    font-size: 2rem;
-    color: ${({ theme }) => theme.colors.primary};
-    margin-bottom: ${({ theme }) => theme.spacing.md};
-  }
+  .header {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    margin-bottom: 1rem;
 
-  h4 {
-    font-size: 1.25rem;
-    margin-bottom: ${({ theme }) => theme.spacing.sm};
-    color: ${({ theme }) => theme.colors.text};
+    .icon-wrap {
+      color: ${({ theme }) => theme.colors.arcanePurple};
+      background: rgba(123, 47, 190, 0.15);
+      padding: 0.5rem;
+      border-radius: 4px;
+    }
+
+    h4 {
+      font-family: 'Orbitron', sans-serif;
+      font-size: 0.9rem;
+      color: ${({ theme }) => theme.colors.hexBlue};
+      letter-spacing: 1px;
+      text-transform: uppercase;
+    }
   }
 
   .school {
-    color: ${({ theme }) => theme.colors.primary};
+    color: ${({ theme }) => theme.colors.arcaneGold};
     font-weight: 600;
-    margin-bottom: ${({ theme }) => theme.spacing.xs};
+    font-size: 0.85rem;
+    margin-bottom: 0.25rem;
   }
 
   .year {
     color: ${({ theme }) => theme.colors.textLight};
-    font-size: 0.875rem;
-    margin-bottom: ${({ theme }) => theme.spacing.sm};
+    font-size: 0.75rem;
+    margin-bottom: 0.5rem;
+  }
+
+  .degree {
+    color: ${({ theme }) => theme.colors.text};
+    font-size: 0.85rem;
+    font-weight: 600;
+    margin-bottom: 0.25rem;
   }
 
   p {
     color: ${({ theme }) => theme.colors.textLight};
+    font-size: 0.8rem;
     line-height: 1.6;
   }
 `;
 
-const EducationItem = styled.div<{ hasMultiple: boolean; isLast: boolean }>`
-  ${({ hasMultiple, isLast, theme }) => 
-    hasMultiple && !isLast && `
-      margin-bottom: ${theme.spacing.lg};
-      padding-bottom: ${theme.spacing.md};
-      border-bottom: 1px solid ${theme.colors.border || '#e5e7eb'};
-    `}
-`;
-
-const CertificationsList = styled.div`
+const CertList = styled.div`
   display: flex;
   flex-wrap: wrap;
-  gap: ${({ theme }) => theme.spacing.sm};
-  margin-top: ${({ theme }) => theme.spacing.md};
+  gap: 0.5rem;
+  margin-top: 1rem;
+`;
 
-  .cert-item {
-    background: ${({ theme }) => theme.colors.primary};
-    color: ${({ theme }) => theme.colors.white};
-    padding: ${({ theme }) => theme.spacing.xs} ${({ theme }) => theme.spacing.sm};
-    border-radius: ${({ theme }) => theme.borderRadius.medium};
-    font-size: 0.875rem;
-    font-weight: 500;
-    display: flex;
-    align-items: center;
-    gap: ${({ theme }) => theme.spacing.xs};
+const CertTag = styled.span`
+  background: rgba(200, 155, 60, 0.15);
+  color: ${({ theme }) => theme.colors.arcaneGold};
+  padding: 0.3rem 0.75rem;
+  border-radius: 3px;
+  font-size: 0.75rem;
+  font-family: 'Fira Code', monospace;
+  border: 1px solid rgba(200, 155, 60, 0.2);
+  display: flex;
+  align-items: center;
+  gap: 0.3rem;
+  transition: all 0.3s ease;
+
+  &:hover {
+    border-color: ${({ theme }) => theme.colors.arcaneGold};
+    box-shadow: 0 0 10px rgba(200, 155, 60, 0.2);
   }
 `;
 
 const About: React.FC = () => {
   const stats = [
-    { number: '2+', label: 'Years Experience' },
-    { number: '20+', label: 'Projects Completed' },
+    { number: '2+', label: 'Years Exp' },
+    { number: '20+', label: 'Projects' },
     { number: '10+', label: 'Technologies' },
-    { number: '98%', label: 'Client Satisfaction' },
+    { number: '98%', label: 'Satisfaction' },
   ];
-
-  const hasMultipleEducations = education.length > 1;
 
   return (
     <AboutContainer id="about">
       <Container>
-        <SectionTitle>About Me</SectionTitle>
+        <SectionTitle>// ABOUT</SectionTitle>
         
         <AboutContent>
-          <AboutText>
-            <motion.h3
-              initial={{ opacity: 0, x: -50 }}
-              whileInView={{ opacity: 1, x: 0 }}
-              transition={{ duration: 0.6 }}
-              viewport={{ once: true }}
-            >
-              Passionate Developer & Problem Solver
-            </motion.h3>
-            
-            <motion.p
-              initial={{ opacity: 0, x: -50 }}
-              whileInView={{ opacity: 1, x: 0 }}
-              transition={{ duration: 0.6, delay: 0.2 }}
-              viewport={{ once: true }}
-            >
-              I'm a full-stack developer with a passion for creating innovative web solutions. 
-              With over 2 years of experience in the Education sector.
-            </motion.p>
-            
-            <motion.p
-              initial={{ opacity: 0, x: -50 }}
-              whileInView={{ opacity: 1, x: 0 }}
-              transition={{ duration: 0.6, delay: 0.4 }}
-              viewport={{ once: true }}
-            >
-              My expertise spans across modern JavaScript frameworks, backend technologies like PHP, 
-              and cloud platforms. I believe in writing clean, maintainable code and staying 
-              up-to-date with the latest industry trends and best practices.
-            </motion.p>
+          <TerminalWindow
+            initial={{ opacity: 0, x: -50 }}
+            whileInView={{ opacity: 1, x: 0 }}
+            transition={{ duration: 0.6 }}
+            viewport={{ once: true }}
+          >
+            <TerminalBar>
+              <span className="dot r" />
+              <span className="dot y" />
+              <span className="dot g" />
+              <span className="title">cat about.txt</span>
+            </TerminalBar>
+            <TerminalBody>
+              <div>
+                <Prompt>❯ </Prompt>
+                <Command>cat about.txt</Command>
+              </div>
+              <OutputText>
+                I'm a full-stack developer with a passion for creating innovative web solutions. 
+                With over 2 years of experience in the Education sector.
+              </OutputText>
+              <OutputText>
+                My expertise spans across modern JavaScript frameworks, backend technologies like PHP, 
+                and cloud platforms. I believe in writing clean, maintainable code and staying 
+                up-to-date with the latest industry trends and best practices.
+              </OutputText>
 
-            <StatsContainer>
-              {stats.map((stat, index) => (
-                <motion.div
-                  key={index}
-                  initial={{ opacity: 0, y: 30 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  transition={{ duration: 0.6, delay: index * 0.1 }}
-                  viewport={{ once: true }}
-                >
-                  <StatItem>
-                    <span className="number">{stat.number}</span>
-                    <span className="label">{stat.label}</span>
-                  </StatItem>
-                </motion.div>
-              ))}
-            </StatsContainer>
-          </AboutText>
+              <StatsGrid>
+                {stats.map((stat, index) => (
+                  <StatBox
+                    key={index}
+                    initial={{ opacity: 0, y: 20 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    transition={{ duration: 0.4, delay: index * 0.1 }}
+                    viewport={{ once: true }}
+                  >
+                    <div className="number">{stat.number}</div>
+                    <div className="label">{stat.label}</div>
+                  </StatBox>
+                ))}
+              </StatsGrid>
+            </TerminalBody>
+          </TerminalWindow>
 
-          <motion.div
+          <ProfileFrame
             initial={{ opacity: 0, x: 50 }}
             whileInView={{ opacity: 1, x: 0 }}
             transition={{ duration: 0.6 }}
             viewport={{ once: true }}
           >
-            <ProfileImage>
-              <img 
-                src="/images/profile.jpg" 
-                alt={personalInfo.name}
-                onError={(e) => {
-                  // Fallback to a placeholder if image doesn't exist
-                  e.currentTarget.src = `https://via.placeholder.com/400x400/667eea/ffffff?text=${personalInfo.name.charAt(0)}`;
-                }}
-              />
-            </ProfileImage>
-          </motion.div>
+            <div className="arcane-frame" />
+            <img 
+              className="profile"
+              src="/images/profile.jpg" 
+              alt={personalInfo.name}
+              onError={(e) => {
+                e.currentTarget.src = `https://via.placeholder.com/400x400/120b1e/00d4ff?text=${personalInfo.name.charAt(0)}`;
+              }}
+            />
+          </ProfileFrame>
         </AboutContent>
 
         <EducationSection>
-          <EducationGrid>
-            <EducationCard
+          <EduGrid>
+            <EduCard
               initial={{ opacity: 0, y: 50 }}
               whileInView={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6 }}
               viewport={{ once: true }}
             >
-              <Icon name="FaGraduationCap" className="icon" size={24} />
-              <h4>Education</h4>
+              <div className="header">
+                <span className="icon-wrap">
+                  <Icon name="FaGraduationCap" size={20} />
+                </span>
+                <h4>Education</h4>
+              </div>
               {education.map((edu, index) => (
-                <EducationItem 
-                  key={index} 
-                  hasMultiple={hasMultipleEducations} 
-                  isLast={index === education.length - 1}
-                >
+                <div key={index} style={{ marginBottom: index < education.length - 1 ? '1rem' : '0', paddingBottom: index < education.length - 1 ? '1rem' : '0', borderBottom: index < education.length - 1 ? '1px solid rgba(0, 212, 255, 0.1)' : 'none' }}>
+                  <div className="degree">{edu.degree}</div>
                   <div className="school">{edu.school}</div>
                   <div className="year">{edu.year}</div>
-                  <h5>{edu.degree}</h5>
                   <p>{edu.description}</p>
-                </EducationItem>
+                </div>
               ))}
-            </EducationCard>
+            </EduCard>
 
-            <EducationCard
+            <EduCard
               initial={{ opacity: 0, y: 50 }}
               whileInView={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6, delay: 0.2 }}
               viewport={{ once: true }}
             >
-              <Icon name="FaCertificate" className="icon" size={24} />
-              <h4>Certifications</h4>
-              <p>Professional certifications that validate my expertise in various technologies and methodologies.</p>
-              
-              <CertificationsList>
-                {certifications.map((cert, index) => (
-                  <span key={index} className="cert-item">
-                    <Icon name="FaCertificate" size={16} />
+              <div className="header">
+                <span className="icon-wrap">
+                  <Icon name="FaCertificate" size={20} />
+                </span>
+                <h4>Certifications</h4>
+              </div>
+              <p>Professional certifications validating expertise in technical domains.</p>
+              <CertList>
+                {certifications.map((cert, idx) => (
+                  <CertTag key={idx}>
+                    <Icon name="FaCertificate" size={12} />
                     {cert}
-                  </span>
+                  </CertTag>
                 ))}
-              </CertificationsList>
-            </EducationCard>
-          </EducationGrid>
+              </CertList>
+            </EduCard>
+          </EduGrid>
         </EducationSection>
       </Container>
     </AboutContainer>

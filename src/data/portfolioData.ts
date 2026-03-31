@@ -19,15 +19,19 @@ export const contactInfo: ContactInfo = {
 export const skills: Skill[] = [
   {
     category: "Frontend",
-    skills: ["React", "HTML", "CSS", "JavaScript", "Bootstrap", "Flutter", "JSP"]
+    skills: ["React", "TypeScript", "HTML", "CSS", "JavaScript", "Bootstrap", "Flutter", "JSP"]
   },
   {
     category: "Backend",
-    skills: ["PHP", "Java", "SpringBoot", "Python", "C#", "C++", "MySQL", "MongoDB", "Firebase", "REST APIs",  "Jakarta Servlet"]
+    skills: ["PHP", "Node.js", "Java", "SpringBoot", "Python", "C#", "C++", "MySQL", "MongoDB", "Firebase", "REST APIs", "Jakarta Servlet"]
   },
   {
     category: "Mobile & Desktop",
     skills: ["Flutter", "Kotlin", "JavaFX", "C#"]
+  },
+  {
+    category: "AI & Machine Learning",
+    skills: ["Machine Learning", "PyTorch", "Transformers", "AI Agents", "Deep Learning", "NLP"]
   },
   {
     category: "IoT & Hardware",
@@ -35,7 +39,7 @@ export const skills: Skill[] = [
   },
   {
     category: "Tools & Technologies",
-    skills: ["Git", "Firebase", "MySQL", "MongoDB"]
+    skills: ["Git", "Jupyter Notebook", "Firebase", "MySQL", "MongoDB"]
   },
   {
     category: "Communication & Automation",
@@ -87,7 +91,20 @@ export const experiences: Experience[] = [
       "Gained expertise in multiple programming languages and development frameworks"
     ],
     technologies: ["PHP", "SpringBoot", "React", "Python", "Java", "JavaFX", "MySQL", "MongoDB", "Firebase", "C++", "Arduino", "Flutter" , "Kotlin"]
-  }
+  },
+  {
+    id: 4,
+    company: "Senova Global Pvt Ltd",
+    position: "Software Engineering Intern",
+    duration: "Dec 2025 - Jun 2026",
+    description: [
+      "Contributing to the development of enterprise-level software solutions and internal tools",
+      "Collaborating with cross-functional teams to translate business requirements into technical specifications",
+      "Assisting in the optimization of front-end components and back-end API integrations",
+      "Participating in code reviews and agile development cycles to ensure high-quality software delivery"
+    ],
+    technologies: ["React", "Node.js", "TypeScript", "PostgreSQL", "Git", "REST API"]
+  },
 ];
 
 export const projects: Project[] = [
@@ -139,6 +156,14 @@ export const projects: Project[] = [
     technologies: ["Python", "PyTorch", "Transformers", "FastAPI", "Streamlit", "scikit-learn"],
     githubUrl: "https://github.com/lasindu-themiya/resume_to_job_predictor.git",
     imageUrl: "/images/resume-to-job-matcher.png"
+  },
+  {
+    id: 7,
+    title: "Ensenar - Unified Educational Ecosystem",
+    description: "A comprehensive, multi-platform educational ecosystem consisting of a web frontend, mobile application, scalable backend services, integrated machine learning models, and an AI agent. Built across multiple repositories, it leverages a diverse modern tech stack to deliver an intelligent and cohesive learning experience.",
+    technologies: ["TypeScript", "JavaScript", "Python", "Kotlin", "Machine Learning", "AI Agents"],
+    githubUrl: "https://github.com/lasindu-themiya?tab=repositories&q=ensenar",
+    imageUrl: "/images/ensenar.png"
   }
 ];
 

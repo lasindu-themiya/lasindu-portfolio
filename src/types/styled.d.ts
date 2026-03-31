@@ -22,12 +22,22 @@ declare module 'styled-components' {
       footerText: string;
       footerTextLight: string;
       footerSocialBg: string;
+      terminalGreen: string;
+      hexBlue: string;
+      arcaneGold: string;
+      arcanePurple: string;
+      arcanePurpleGlow: string;
+      terminalBg: string;
+      terminalBorder: string;
     };
     shadows: {
       small: string;
       medium: string;
       large: string;
       hover: string;
+      glow: string;
+      hexGlow: string;
+      purpleGlow: string;
     };
     breakpoints: {
       mobile: string;

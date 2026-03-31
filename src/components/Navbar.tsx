@@ -1,7 +1,11 @@
 import React, { useState, useEffect } from 'react';
-import styled from 'styled-components';
-import { Menu, X, Sun, Moon } from 'lucide-react';
-import { useDarkMode } from '../contexts/DarkModeContext';
+import styled, { keyframes } from 'styled-components';
+import { Menu, X, Terminal } from 'lucide-react';
+
+const blink = keyframes`
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0; }
+`;
 
 const NavbarContainer = styled.nav<{ scrolled: boolean }>`
   position: fixed;
@@ -9,15 +13,18 @@ const NavbarContainer = styled.nav<{ scrolled: boolean }>`
   left: 0;
   right: 0;
   z-index: 1000;
-  padding: 1rem 0;
+  padding: 0.75rem 0;
   transition: all 0.3s ease;
   background: ${({ scrolled, theme }) => 
     scrolled ? theme.colors.navBg : 'transparent'
   };
-  backdrop-filter: ${({ scrolled }) => scrolled ? 'blur(10px)' : 'none'};
+  backdrop-filter: ${({ scrolled }) => scrolled ? 'blur(15px)' : 'none'};
   border-bottom: ${({ scrolled, theme }) => 
-    scrolled ? `1px solid ${theme.colors.border}` : 'none'
+    scrolled ? `1px solid ${theme.colors.terminalBorder}` : 'none'
   };
+  ${({ scrolled, theme }) => scrolled && `
+    box-shadow: 0 0 20px rgba(0, 212, 255, 0.1);
+  `}
 `;
 
 const NavContent = styled.div`
@@ -43,80 +50,58 @@ const NavControls = styled.div`
   }
 `;
 
-const DarkModeButton = styled.button`
-  background: ${({ theme }) => theme.colors.backgroundAlt};
-  border: 1px solid ${({ theme }) => theme.colors.border};
-  border-radius: 50%;
-  width: 40px;
-  height: 40px;
+const Logo = styled.a`
+  font-family: 'Fira Code', monospace;
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: ${({ theme }) => theme.colors.terminalGreen};
+  text-decoration: none;
   display: flex;
   align-items: center;
-  justify-content: center;
-  cursor: pointer;
-  color: ${({ theme }) => theme.colors.text};
+  gap: 0.5rem;
   transition: all 0.3s ease;
-  position: relative;
-  overflow: hidden;
 
-  &::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background: ${({ theme }) => theme.colors.gradient};
-    opacity: 0;
-    transition: opacity 0.3s ease;
-    border-radius: 50%;
+  .prompt {
+    color: ${({ theme }) => theme.colors.arcanePurple};
+  }
+
+  .user {
+    color: ${({ theme }) => theme.colors.hexBlue};
+  }
+
+  .path {
+    color: ${({ theme }) => theme.colors.arcaneGold};
+  }
+
+  .cursor {
+    display: inline-block;
+    width: 8px;
+    height: 16px;
+    background: ${({ theme }) => theme.colors.terminalGreen};
+    animation: ${blink} 1s step-end infinite;
+    margin-left: 2px;
+    vertical-align: middle;
   }
 
   &:hover {
-    transform: scale(1.1);
-    box-shadow: ${({ theme }) => theme.shadows.medium};
-    
-    &::before {
-      opacity: 1;
-    }
-    
-    svg {
-      position: relative;
-      z-index: 1;
-      color: ${({ theme }) => theme.colors.white};
-    }
-  }
-
-  svg {
-    transition: all 0.3s ease;
+    text-shadow: 0 0 10px rgba(0, 255, 65, 0.5);
   }
 
   @media (max-width: ${({ theme }) => theme.breakpoints.mobile}) {
-    width: 36px;
-    height: 36px;
-  }
-`;
-
-const Logo = styled.a`
-  font-size: 1.5rem;
-  font-weight: 700;
-  color: ${({ theme }) => theme.colors.primary};
-  text-decoration: none;
-
-  @media (max-width: ${({ theme }) => theme.breakpoints.mobile}) {
-    font-size: 1.25rem;
+    font-size: 0.75rem;
   }
 `;
 
 const NavLinks = styled.ul<{ isOpen: boolean }>`
   display: flex;
   list-style: none;
-  gap: 2rem;
+  gap: 0.5rem;
 
   @media (max-width: ${({ theme }) => theme.breakpoints.tablet}) {
     position: fixed;
     top: 0;
     right: ${({ isOpen }) => isOpen ? '0' : '-100%'};
-    width: 280px;
+    width: 300px;
     height: 100vh;
     background: ${({ theme }) => theme.colors.background};
     flex-direction: column;
@@ -124,8 +109,9 @@ const NavLinks = styled.ul<{ isOpen: boolean }>`
     align-items: center;
     transition: right 0.3s ease;
     box-shadow: ${({ theme }) => theme.shadows.large};
-    border-left: 1px solid ${({ theme }) => theme.colors.border};
-    gap: 2.5rem;
+    border-left: 1px solid ${({ theme }) => theme.colors.terminalBorder};
+    gap: 1rem;
+    z-index: 1001;
   }
 
   @media (max-width: ${({ theme }) => theme.breakpoints.mobile}) {
@@ -135,50 +121,48 @@ const NavLinks = styled.ul<{ isOpen: boolean }>`
 `;
 
 const NavLink = styled.a`
-  color: ${({ theme }) => theme.colors.text};
-  font-weight: 500;
+  color: ${({ theme }) => theme.colors.textLight};
+  font-weight: 400;
   text-decoration: none;
-  transition: color 0.3s ease;
-  position: relative;
-  font-size: 1rem;
+  transition: all 0.3s ease;
+  font-family: 'Fira Code', monospace;
+  font-size: 0.8rem;
+  padding: 0.4rem 0.75rem;
+  border-radius: 3px;
+  border: 1px solid transparent;
+
+  &::before {
+    content: './';
+    color: ${({ theme }) => theme.colors.arcanePurple};
+    font-weight: 600;
+  }
 
   &:hover {
-    color: ${({ theme }) => theme.colors.primary};
-  }
-
-  &::after {
-    content: '';
-    position: absolute;
-    bottom: -5px;
-    left: 0;
-    width: 0;
-    height: 2px;
-    background: ${({ theme }) => theme.colors.primary};
-    transition: width 0.3s ease;
-  }
-
-  &:hover::after {
-    width: 100%;
+    color: ${({ theme }) => theme.colors.hexBlue};
+    background: rgba(0, 212, 255, 0.05);
+    border-color: rgba(0, 212, 255, 0.15);
+    text-shadow: 0 0 8px rgba(0, 212, 255, 0.3);
   }
 
   @media (max-width: ${({ theme }) => theme.breakpoints.tablet}) {
-    font-size: 1.125rem;
-    padding: 0.5rem 1rem;
+    font-size: 1rem;
+    padding: 0.75rem 1.5rem;
   }
 `;
 
 const MobileMenuButton = styled.button`
   display: none;
   background: none;
-  border: none;
-  color: ${({ theme }) => theme.colors.text};
+  border: 1px solid ${({ theme }) => theme.colors.terminalBorder};
+  color: ${({ theme }) => theme.colors.hexBlue};
   cursor: pointer;
   padding: 0.5rem;
-  border-radius: ${({ theme }) => theme.borderRadius.medium};
-  transition: background-color 0.3s ease;
+  border-radius: 4px;
+  transition: all 0.3s ease;
 
   &:hover {
-    background: ${({ theme }) => theme.colors.backgroundAlt};
+    background: rgba(0, 212, 255, 0.1);
+    box-shadow: ${({ theme }) => theme.shadows.glow};
   }
 
   @media (max-width: ${({ theme }) => theme.breakpoints.tablet}) {
@@ -193,15 +177,15 @@ const CloseButton = styled.button`
   top: 2rem;
   right: 2rem;
   background: none;
-  border: none;
-  color: ${({ theme }) => theme.colors.text};
+  border: 1px solid ${({ theme }) => theme.colors.terminalBorder};
+  color: ${({ theme }) => theme.colors.hexBlue};
   cursor: pointer;
   padding: 0.5rem;
-  border-radius: ${({ theme }) => theme.borderRadius.medium};
-  transition: background-color 0.3s ease;
+  border-radius: 4px;
+  transition: all 0.3s ease;
 
   &:hover {
-    background: ${({ theme }) => theme.colors.backgroundAlt};
+    background: rgba(0, 212, 255, 0.1);
   }
 
   @media (min-width: ${({ theme }) => theme.breakpoints.tablet}) {
@@ -216,7 +200,7 @@ const Overlay = styled.div<{ isOpen: boolean }>`
     left: 0;
     right: 0;
     bottom: 0;
-    background: rgba(0, 0, 0, 0.5);
+    background: rgba(10, 6, 20, 0.8);
     backdrop-filter: blur(4px);
     z-index: 999;
     opacity: ${({ isOpen }) => isOpen ? 1 : 0};
@@ -228,7 +212,6 @@ const Overlay = styled.div<{ isOpen: boolean }>`
 const Navbar: React.FC = () => {
   const [scrolled, setScrolled] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
-  const { isDarkMode, toggleDarkMode } = useDarkMode();
 
   useEffect(() => {
     const handleScroll = () => {
@@ -239,7 +222,6 @@ const Navbar: React.FC = () => {
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
-  // Prevent body scroll when mobile menu is open
   useEffect(() => {
     if (mobileMenuOpen) {
       document.body.style.overflow = 'hidden';
@@ -253,12 +235,12 @@ const Navbar: React.FC = () => {
   }, [mobileMenuOpen]);
 
   const navItems = [
-    { href: '#home', label: 'Home' },
-    { href: '#about', label: 'About' },
-    { href: '#experience', label: 'Experience' },
-    { href: '#projects', label: 'Projects' },
-    { href: '#skills', label: 'Skills' },
-    { href: '#contact', label: 'Contact' },
+    { href: '#home', label: 'home' },
+    { href: '#about', label: 'about' },
+    { href: '#experience', label: 'experience' },
+    { href: '#projects', label: 'projects' },
+    { href: '#skills', label: 'skills' },
+    { href: '#contact', label: 'contact' },
   ];
 
   const handleNavClick = (href: string) => {
@@ -274,7 +256,14 @@ const Navbar: React.FC = () => {
       <NavbarContainer scrolled={scrolled}>
         <NavContent>
           <Logo href="#home" onClick={() => handleNavClick('#home')}>
-            Lasindu Themiya
+            <Terminal size={16} />
+            <span>
+              <span className="user">lasindu</span>
+              <span className="prompt">@</span>
+              <span className="path">portfolio</span>
+              <span className="prompt">:~$</span>
+              <span className="cursor" />
+            </span>
           </Logo>
           
           <NavLinks isOpen={mobileMenuOpen}>
@@ -300,13 +289,6 @@ const Navbar: React.FC = () => {
           </NavLinks>
 
           <NavControls>
-            <DarkModeButton
-              onClick={toggleDarkMode}
-              title={isDarkMode ? 'Switch to light mode' : 'Switch to dark mode'}
-            >
-              {isDarkMode ? <Sun size={20} /> : <Moon size={20} />}
-            </DarkModeButton>
-            
             <MobileMenuButton
               onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
               aria-label="Toggle mobile menu"
