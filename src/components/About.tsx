@@ -263,9 +263,9 @@ const CertTag = styled.span`
 const About: React.FC = () => {
   const stats = [
     { number: '2+', label: 'Years Exp' },
-    { number: '20+', label: 'Projects' },
+    { number: '50+', label: 'Projects' },
     { number: '10+', label: 'Technologies' },
-    { number: '98%', label: 'Satisfaction' },
+    { number: '99%', label: 'Satisfaction' },
   ];
 
   return (
