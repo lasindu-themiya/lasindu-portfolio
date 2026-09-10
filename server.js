@@ -197,6 +197,10 @@ app.get('/api/test-email', async (req, res) => {
   }
 });
 
-app.listen(PORT, () => {
-  console.log(`Email server running on port ${PORT}`);
-});
+if (require.main === module) {
+  app.listen(PORT, () => {
+    console.log(`Email server running on port ${PORT}`);
+  });
+}
+
+module.exports = app;
